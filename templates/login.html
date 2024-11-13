@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ template "head" . }}
+</head>
+<body>
+<div class="container m-3">
+
+  {{ template "navbar" . }}
+  
+  <div class="card card-body m-5">
+    <form action="/login" method="post">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="Email" id="email" value="heron@gmail.com">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="Password" value="123456">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+  {{ template "footer" . }}
+
+</div>
+
+</body>
+</html>

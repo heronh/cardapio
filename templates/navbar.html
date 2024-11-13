@@ -1,0 +1,23 @@
+{{define "navbar"}}
+<nav class="navbar navbar-expand-lg bg-light shadow p-2 mb-1 rounded">
+	<div class="container-fluid">
+	  <a class="navbar-brand p-1" href="#">Loterias</a>
+	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+			<li class="nav-item {{ if .home_active }} {{ .home_active }} {{end}}">
+				<a class="nav-link active" aria-current="page" href="/">Início</a>
+			</li>
+			<li class="nav-item {{ if .login_active }} {{ .login_active }} {{end}}">
+			  	<a class="nav-link active" aria-current="page" href="/login">Entrar</a>
+			</li>
+			<li class="nav-item {{ if .welcome_active }} {{ .welcome_active }} {{end}}">
+			  	<a class="nav-link active" aria-current="page" href="/welcome">Benvindo</a>
+			</li>
+		</ul>
+	  </div>
+	</div>
+</nav>
+{{end}}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head>
+  {{ template "head" . }}
+</head>
+<body>
+<div class="container m-3">
+
+  {{ template "navbar" . }}
+  
+  <h4>Mensagens</h4>
+  <ul>
+    {{ range .Mensagens }}
+      <li>{{ . }}</li> 
+    {{ end }}
+  </ul>
+
+
+  <h4>Items</h4>
+  <ul>
+    {{ range .Items }}
+      <li>{{ . }}</li> 
+    {{ end }}
+  </ul>
+
+  {{ template "footer" . }}
+
+</div>
+
+</body>
+</html>
