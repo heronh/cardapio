@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	r := gin.Default()
+	r.GET("/", func(c *gin.Context) {
+		c.String(200, "Welcome to the index page!")
+	})
+	r.Run() // listen and serve on 0.0.0.0:8080
 }
