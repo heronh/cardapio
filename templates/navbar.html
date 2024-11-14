@@ -1,7 +1,7 @@
 {{define "navbar"}}
 <nav class="navbar navbar-expand-lg bg-light shadow p-2 mb-1 rounded">
 	<div class="container-fluid">
-	  <a class="navbar-brand p-1" href="#">Loterias</a>
+	  <a class="navbar-brand p-1" href="#">Cardápio digital</a>
 	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	  </button>
@@ -16,6 +16,12 @@
 			<li class="nav-item {{ if .welcome_active }} {{ .welcome_active }} {{end}}">
 			  	<a class="nav-link active" aria-current="page" href="/welcome">Benvindo</a>
 			</li>
+			<li class="nav-item {{ if .users_active }} {{ .users_active }} {{end}}">
+				<a class="nav-link active" aria-current="page" href="/users">Lista de usuários</a>
+		  	</li>
+			  <li class="nav-item {{ if .todos_active }} {{ .todos_active }} {{end}}">
+				<a class="nav-link active" aria-current="page" href="/todos">Tarefas</a>
+		  	</li>
 		</ul>
 	  </div>
 	</div>

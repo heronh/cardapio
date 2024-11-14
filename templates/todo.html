@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }}</title>  
+  
+  {{ template "head" . }}
+</head>
+<body>
+<div class="container m-3">
+
+  {{ template "navbar" . }}
+  
+<div class="card">
+    <div class="card-header">
+        Lista de Tarefas:
+    </div>
+    <ul class="list-group list-group-flush">
+        <!-- Formulário de inclusão de tarefas -->
+        <li class="list-group-item">
+            <form id="todo-form" method="post">
+                <div class="form-group">
+                    <label for="description">Descrição:</label>
+                    <input type="text" class="form-control" id="description" name="description" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </form>
+        </li>
+        {{ range .Todos }}
+        <li class="list-group-item">{{ .Description }}</li>
+        {{ end }}
+    </ul>
+</div>
+
+  {{ template "footer" . }}
+
+</div>

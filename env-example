@@ -1,0 +1,7 @@
+port=8080
+host=localhost
+port=5432
+user=postgres
+password=mysecretpassword
+dbname=cardapio
+SECRET_KEY=hhheew566#4SW2!HJHgr
