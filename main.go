@@ -11,12 +11,13 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/heronh/cardapio/initializers"
 	"github.com/heronh/cardapio/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var jwtKey = []byte("my_secret_key")
 
 type Credentials struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -121,6 +122,16 @@ func new_user(c *gin.Context) {
 		return
 	}
 
+	// hash the password
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to hash the password",
+		})
+		return
+	}
+	user.Password = string(hash)
+
 	if err := initializers.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user"})
 		return
@@ -153,14 +164,26 @@ func login(c *gin.Context) {
 		return
 	}
 
-	if creds.Username != "user" || creds.Password != "password" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+	// hash the password
+	hash, err := bcrypt.GenerateFromPassword([]byte(creds.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to hash the password",
+		})
+		return
+	}
+	creds.Password = string(hash)
+
+	// read data from database
+	var user models.User
+	if err := initializers.DB.Where("email = ?", creds.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não cadastrado"})
 		return
 	}
 
 	expirationTime := time.Now().Add(5 * time.Minute)
 	claims := &Claims{
-		Username: creds.Username,
+		Username: creds.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
