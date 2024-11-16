@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }}</title>  
+  
+  {{ template "head" . }}
+</head>
+<body>
+<div class="container m-3">
+
+  {{ template "navbar" . }}
+  
+<h2>Register</h2>
+<form id="register-form">
+    <div class="form-group">
+        <label for="name">Username:</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" class="form-control"  required>
+    </div>
+    <div class="form-group">
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+  {{ template "footer" . }}
+
+</div>
+
+</body>
+</html>
+
+<script>
+    document.getElementById('register-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+        console.log(name, password, email);
+
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, password, email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+                window.location.href = '/todos';
+            } else if (data.error) {
+                alert(data.error);
+            }
+        });
+    });
+</script>

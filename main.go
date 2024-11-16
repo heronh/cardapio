@@ -44,34 +44,30 @@ func main() {
 
 	r.POST("/login", login)
 	r.GET("/logout", logout)
+	r.GET("register", register)
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
-
-	r.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", nil)
-	})
-
+	r.POST("/register", new_user)
 	r.GET("/welcome", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "welcome.html", gin.H{
+		c.HTML(http.StatusOK, "index.html", gin.H{
 			"Title":   "Benvindo",
 			"Heading": "Página de acesso!",
 			"Message": "",
 			"welcome": "h5",
 		})
 	})
+	r.GET("/login", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "login.html", nil)
+	})
 
 	// Lê banco de dados e lista tarefas
-	r.GET("/todos", func(c *gin.Context) {
+	r.GET("/todos", authMiddleware(), func(c *gin.Context) {
 		var todos []models.Todo
 		if err := initializers.DB.Find(&todos).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve todos"})
 			return
 		}
-		// fmt.Println("Todos:")
-		// for i := range todos {
-		// 	fmt.Println(todos[i].Description)
-		// }
 		c.HTML(http.StatusOK, "todo.html", gin.H{"Todos": todos})
 	})
 
@@ -83,6 +79,19 @@ func main() {
 		todo.Updated_at = time.Now()
 		todo.Completed = false
 		todo.Description = c.PostForm("description")
+
+		fmt.Println(c)
+		user, exists := c.Get("username")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			return
+		}
+
+		var userModel models.User
+		if err := initializers.DB.Where("username = ?", user).First(&userModel).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find user"})
+			return
+		}
 
 		fmt.Println("Todo fields:")
 		fmt.Println("Description:", todo.Description)
@@ -105,6 +114,29 @@ func main() {
 	r.Run(":" + port)
 }
 
+func new_user(c *gin.Context) {
+	user := models.User{}
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := initializers.DB.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Usuário criado com sucesso"})
+}
+
+func register(c *gin.Context) {
+	c.HTML(http.StatusOK, "register.html", gin.H{
+		"Title":           "Cadastro",
+		"Heading":         "Cadastro!",
+		"Message":         "Cadastro de usuário",
+		"register_active": "h5",
+	})
+}
+
 func logout(c *gin.Context) {
 	http.SetCookie(c.Writer, &http.Cookie{
 		Name:    "token",
@@ -116,16 +148,11 @@ func logout(c *gin.Context) {
 
 func login(c *gin.Context) {
 	creds := Credentials{}
-	fmt.Print(c)
 	if err := c.ShouldBindJSON(&creds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// creds.Username = c.PostForm("username")
-	// creds.Password = c.PostForm("password")
-	fmt.Println("Username - ", creds.Username)
-	fmt.Println("Password - ", creds.Password)
 	if creds.Username != "user" || creds.Password != "password" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return

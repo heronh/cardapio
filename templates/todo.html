@@ -25,6 +25,11 @@
                     <input type="text" class="form-control" id="description" name="description" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Adicionar</button>
+                <input type="number" id="user_id" name="user_id" value="{{ .UserID }}" hidden>
+                <div class="form-group">
+                  <label for="username">Usuário:</label>
+                  <input type="text" class="form-control" id="username" name="username" value="{{ .UserName }}" readonly>
+                </div>
             </form>
         </li>
         {{ range .Todos }}

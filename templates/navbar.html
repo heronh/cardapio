@@ -19,9 +19,12 @@
 			<li class="nav-item {{ if .users_active }} {{ .users_active }} {{end}}">
 				<a class="nav-link active" aria-current="page" href="/users">Lista de usuários</a>
 		  	</li>
-			  <li class="nav-item {{ if .todos_active }} {{ .todos_active }} {{end}}">
+			<li class="nav-item {{ if .todos_active }} {{ .todos_active }} {{end}}">
 				<a class="nav-link active" aria-current="page" href="/todos">Tarefas</a>
 		  	</li>
+			<li class="nav-item {{ if .register_active }} {{ .register_active }} {{end}}">
+				<a class="nav-link active" aria-current="page" href="/register">Cadastro</a>
+			</li>
 		</ul>
 	  </div>
 	</div>
