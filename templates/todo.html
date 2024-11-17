@@ -16,24 +16,90 @@
     <div class="card-header">
         Lista de Tarefas:
     </div>
-    <ul class="list-group list-group-flush">
-        <!-- Formulário de inclusão de tarefas -->
+      <ul class="list-group list-group-flush">  
         <li class="list-group-item">
-            <form id="todo-form" method="post">
-                <div class="form-group">
-                    <label for="description">Descrição:</label>
-                    <input type="text" class="form-control" id="description" name="description" required>
-                    <input type="text" class="form-control" value="{{.Id}}" name="Id" hidden>
+          <form id="todo-form" method="post">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-1">
+                  <button type="submit" class="btn" title="Adicionar tarefa">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
                 </div>
-                <button type="submit" class="btn btn-primary">Adicionar</button>
-            </form>
+                <div class="col-11">
+                  <input type="text" class="form-control" id="description" name="description" placeholder="Descrição" required>
+                  <input type="text" class="form-control" value="{{.Id}}" name="Id" hidden>
+                </div>
+              </div>
+            </div>
+          </form>
         </li>
         {{ range .Todos }}
-        <li class="list-group-item">{{ .Description }}</li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-1">
+                <button type="submit" class="btn" id="btn-delete" title="Excluir">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+              <div class="col-1">
+                  {{ if .Completed }}
+                    <button type="submit" class="btn check" id="btn-uncheck" title="Completo">
+                      <i class="bi bi-check-square"></i>
+                    </button> 
+                  {{ else }}
+                    <button type="submit" class="btn check" id="btn-check" title="Completo">
+                      <i class="bi bi-square"></i>
+                    </button>
+                  {{ end }}
+              </div>
+              <div class="col-8 pt-2">
+                {{ .Description }}
+              </div>
+            </div>  
+          </li>
         {{ end }}
     </ul>
 </div>
 
-  {{ template "footer" . }}
+{{ template "footer" . }}
 
 </div>
+
+<script>
+  document.querySelectorAll("#btn-delete").forEach(button => {
+    button.addEventListener("click", function(event) {
+      const id = event.target.parentElement.parentElement.querySelector("input[name='Id']").value;
+      fetch("/todo_delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id })
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.reload();
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll("#btn-check").forEach(button => {
+    button.addEventListener("click", function(event) {
+      const id = event.target.parentElement.parentElement.querySelector("input[name='Id']").value;
+      fetch("/todo", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id })
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.reload();
+        }
+      });
+    });
+  });
+</script>

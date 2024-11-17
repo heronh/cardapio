@@ -43,6 +43,8 @@ func main() {
 
 	// Serve static files (CSS) from the 'static' directory
 	r.Static("/static", "./static")
+	// Serve Bootstrap icons from the 'node_modules/bootstrap-icons' directory
+	r.Static("/icons", "./static/bootstrap-icons")
 
 	r.POST("/login", login)
 	r.GET("/logout", logout)
@@ -64,54 +66,10 @@ func main() {
 	})
 
 	// Lê banco de dados e lista tarefas
-	r.GET("/todos", authMiddleware(), func(c *gin.Context) {
-		var todos []models.Todo
-		if err := initializers.DB.Find(&todos).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve todos"})
-			return
-		}
-
-		// retrieve email and user id from the context
-		Email, _ := c.Get("email")
-		fmt.Println("Email:", Email)
-		ID, _ := c.Get("ID")
-		fmt.Println("Id:", ID)
-		c.HTML(http.StatusOK, "todo.html", gin.H{
-			"Todos": todos,
-			"Email": Email,
-			"Id":    ID,
-		})
-	})
+	r.GET("/todos", authMiddleware(), todos)
 
 	// Salva nova tarefa no banco de dados
-	r.POST("/todos", func(c *gin.Context) {
-		fmt.Println("Creating todo")
-		var todo models.Todo
-		todo.Created_at = time.Now()
-		todo.Updated_at = time.Now()
-		todo.Completed = false
-		todo.Description = c.PostForm("description")
-
-		fmt.Println(c)
-		Id := c.PostForm("Id")
-		var userModel models.User
-		if err := initializers.DB.Where("id = ?", Id).First(&userModel).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find user"})
-			return
-		}
-
-		fmt.Println("Todo fields:")
-		fmt.Println("Description:", todo.Description)
-		fmt.Println("CreatedAt:", todo.Created_at)
-		fmt.Println("UpdatedAt:", todo.Updated_at)
-		fmt.Println("Completed:", todo.Completed)
-
-		if err := initializers.DB.Create(&todo).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create todo"})
-			return
-		}
-		c.JSON(http.StatusCreated, todo)
-	})
+	r.POST("/todos", save_todo)
 
 	// read port in .env file and starts the server
 	port := os.Getenv("PORT")
@@ -119,6 +77,53 @@ func main() {
 		port = "8080" // default port if not specified
 	}
 	r.Run(":" + port)
+}
+
+func todos(c *gin.Context) {
+	var todos []models.Todo
+	if err := initializers.DB.Find(&todos).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve todos"})
+		return
+	}
+
+	// retrieve email and user id from the context
+	Email, _ := c.Get("email")
+	fmt.Println("Email:", Email)
+	ID, _ := c.Get("ID")
+	c.HTML(http.StatusOK, "todo.html", gin.H{
+		"Todos": todos,
+		"Email": Email,
+		"Id":    ID,
+	})
+}
+
+func save_todo(c *gin.Context) {
+	fmt.Println("Creating todo")
+	var todo models.Todo
+	todo.Created_at = time.Now()
+	todo.Updated_at = time.Now()
+	todo.Completed = false
+	todo.Description = c.PostForm("description")
+
+	fmt.Println(c)
+	Id := c.PostForm("Id")
+	var userModel models.User
+	if err := initializers.DB.Where("id = ?", Id).First(&userModel).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find user"})
+		return
+	}
+
+	fmt.Println("Todo fields:")
+	fmt.Println("Description:", todo.Description)
+	fmt.Println("CreatedAt:", todo.Created_at)
+	fmt.Println("UpdatedAt:", todo.Updated_at)
+	fmt.Println("Completed:", todo.Completed)
+
+	if err := initializers.DB.Create(&todo).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create todo"})
+		return
+	}
+	c.Redirect(http.StatusFound, "/todos")
 }
 
 func new_user(c *gin.Context) {
@@ -187,7 +192,7 @@ func login(c *gin.Context) {
 		return
 	}
 
-	expirationTime := time.Now().Add(5 * time.Minute)
+	expirationTime := time.Now().Add(50 * time.Minute)
 	claims := &Claims{
 		Email: creds.Email,
 		Id:    user.ID,
