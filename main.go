@@ -22,7 +22,8 @@ type Credentials struct {
 }
 
 type Claims struct {
-	Username string `json:"username"`
+	Email string `json:"email"`
+	Id    uint   `json:"id"`
 	jwt.RegisteredClaims
 }
 
@@ -69,7 +70,17 @@ func main() {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve todos"})
 			return
 		}
-		c.HTML(http.StatusOK, "todo.html", gin.H{"Todos": todos})
+
+		// retrieve email and user id from the context
+		Email, _ := c.Get("email")
+		fmt.Println("Email:", Email)
+		ID, _ := c.Get("ID")
+		fmt.Println("Id:", ID)
+		c.HTML(http.StatusOK, "todo.html", gin.H{
+			"Todos": todos,
+			"Email": Email,
+			"Id":    ID,
+		})
 	})
 
 	// Salva nova tarefa no banco de dados
@@ -82,14 +93,9 @@ func main() {
 		todo.Description = c.PostForm("description")
 
 		fmt.Println(c)
-		user, exists := c.Get("username")
-		if !exists {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-			return
-		}
-
+		Id := c.PostForm("Id")
 		var userModel models.User
-		if err := initializers.DB.Where("username = ?", user).First(&userModel).Error; err != nil {
+		if err := initializers.DB.Where("id = ?", Id).First(&userModel).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find user"})
 			return
 		}
@@ -183,7 +189,8 @@ func login(c *gin.Context) {
 
 	expirationTime := time.Now().Add(5 * time.Minute)
 	claims := &Claims{
-		Username: creds.Email,
+		Email: creds.Email,
+		Id:    user.ID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
@@ -243,7 +250,8 @@ func authMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("username", claims.Username)
+		c.Set("email", claims.Email)
+		c.Set("ID", claims.Id)
 		c.Next()
 	}
 }
