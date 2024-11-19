@@ -20,9 +20,4 @@ services:
     ports:
       - 5435:5435
     container_name: cardapio
-  adminer:
-    image: adminer
-    restart: always
-    container_name: adminer
-    ports:
-      - 4040:4040
+
