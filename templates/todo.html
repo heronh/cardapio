@@ -38,25 +38,27 @@
           <li class="list-group-item">
             <div class="row">
               <div class="col-1">
-                <button type="submit" class="btn" id="btn-delete" title="Excluir">
+                <button class="btn btn_delete" title="Excluir">
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
               <div class="col-1">
                   {{ if .Completed }}
-                    <button type="submit" class="btn check" id="btn-uncheck" title="Completo">
+                    <button type="submit" class="btn" class="btn-uncheck" title="Completo">
                       <i class="bi bi-check-square"></i>
                     </button> 
                   {{ else }}
-                    <button type="submit" class="btn check" id="btn-check" title="Completo">
+                    <button type="submit" class="btn" class="btn-check" title="Completo">
                       <i class="bi bi-square"></i>
                     </button>
                   {{ end }}
               </div>
               <div class="col-8 pt-2">
+                <input type="text" class="todo_id" name="{{.ID}}" value="{{.ID}}" placeholder="0"> - 
                 {{ .Description }}
               </div>
-            </div>  
+            </div> 
+
           </li>
         {{ end }}
     </ul>
@@ -67,39 +69,46 @@
 </div>
 
 <script>
-  document.querySelectorAll("#btn-delete").forEach(button => {
-    button.addEventListener("click", function(event) {
-      const id = event.target.parentElement.parentElement.querySelector("input[name='Id']").value;
-      fetch("/todo_delete", {
-        method: "DELETE",
+  $(document).ready(function() {
+    $('.btn_delete').on('click', function() {
+      const ID = $(this).parent().parent().find('.todo_id').val();
+      console.log("ID = ", ID);
+      fetch('/todos_delete', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id })
-      })
-      .then(response => {
-        if (response.ok) {
-          window.location.reload();
-        }
-      });
+        body: JSON.stringify({ ID })
+        })
+        .then(response => {
+          if (response.ok) {
+            window.location.reload();
+          }
+        });
     });
   });
 
-  document.querySelectorAll("#btn-check").forEach(button => {
-    button.addEventListener("click", function(event) {
-      const id = event.target.parentElement.parentElement.querySelector("input[name='Id']").value;
-      fetch("/todo", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ id })
-      })
-      .then(response => {
-        if (response.ok) {
-          window.location.reload();
-        }
-      });
-    });
-  });
+  // document.getElementById('login-form').addEventListener('submit', function(event) {
+  //   event.preventDefault();
+  //   const email = document.getElementById('email').value;
+  //   const password = document.getElementById('password').value;
+
+  //   fetch('/login', {
+  //       method: 'POST',
+  //       headers: {
+  //           'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ email, password })
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //       if (data.message) {
+  //           alert(data.message);
+  //           window.location.href = '/todos';
+  //       } else if (data.error) {
+  //           alert(data.error);
+  //       }
+  //   });
+  // });
+
 </script>

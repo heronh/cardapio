@@ -8,6 +8,13 @@
       {
         "document-title": "off"
       }
-    ]
+    ],
+    "axe/structure": [
+      "default",
+      {
+        "list": "off"
+      }
+    ],
+    "button-type": "off"
   }
 }

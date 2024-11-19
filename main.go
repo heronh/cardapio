@@ -71,6 +71,9 @@ func main() {
 	// Salva nova tarefa no banco de dados
 	r.POST("/todos", save_todo)
 
+	// Apaga tarefa do banco de dados
+	r.POST("/todos_delete", todos_delete)
+
 	// read port in .env file and starts the server
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -88,7 +91,6 @@ func todos(c *gin.Context) {
 
 	// retrieve email and user id from the context
 	Email, _ := c.Get("email")
-	fmt.Println("Email:", Email)
 	ID, _ := c.Get("ID")
 	c.HTML(http.StatusOK, "todo.html", gin.H{
 		"Todos": todos,
@@ -168,7 +170,24 @@ func logout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Logged out"})
 }
 
+func todos_delete(c *gin.Context) {
+	fmt.Println(c)
+	todo := models.Todo{}
+	if err := c.ShouldBindJSON(&todo); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	fmt.Println("Deleting todo with id:", todo.ID)
+
+	if err := initializers.DB.Delete(&todo).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not delete todo"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted todo"})
+}
+
 func login(c *gin.Context) {
+	fmt.Println(c)
 	creds := Credentials{}
 	if err := c.ShouldBindJSON(&creds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

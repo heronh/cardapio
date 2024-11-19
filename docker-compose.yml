@@ -1,28 +1,18 @@
-version: '3.9'
-
 services:
-
-  db:
-    image: postgres
-    restart: always
-    # set shared memory limit when using docker-compose
-    shm_size: 128mb
-    # or set shared memory limit when deploy via swarm stack
-    #volumes:
-    #  - type: tmpfs
-    #    target: /dev/shm
-    #    tmpfs:
-    #      size: 134217728 # 128*2^20 bytes = 128Mb
+  postgres:
+    image: postgres:latest        # Use the latest official PostgreSQL image
+    container_name: db            # Assign a meaningful name
+    restart: unless-stopped       # Restart unless explicitly stopped
+ 
     environment:
-      POSTGRES_PASSWORD: cardapio_pass
-      POSTGRES_USER: cardapio_user
-      POSTGRES_DB: cardapio_db
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
     ports:
-      - 5435:5435
-    container_name: cardapio
-  adminer:
-    image: adminer
-    restart: always
-    container_name: adminer
-    ports:
-      - 4040:4040
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist data even if the container is removed
+
+# Define a volume to persist PostgreSQL data
+volumes:
+  postgres_data:
