@@ -75,7 +75,7 @@ func main() {
 	r.POST("/todos_delete", todos_delete)
 
 	// read port in .env file and starts the server
-	port := os.Getenv("PORT")
+	port := os.Getenv("HostPort")
 	if port == "" {
 		port = "8080" // default port if not specified
 	}
