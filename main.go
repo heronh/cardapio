@@ -50,16 +50,17 @@ func main() {
 	r.GET("/logout", logout)
 	r.GET("register", register)
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
-	})
-	r.POST("/register", new_user)
-	r.GET("/welcome", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"Title":   "Benvindo",
 			"Heading": "Página de acesso!",
 			"Message": "",
 			"welcome": "h5",
 		})
+	})
+
+	r.POST("/register", new_user)
+	r.GET("/welcome", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "welcome.html", nil)
 	})
 	r.GET("/login", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "login.html", nil)
