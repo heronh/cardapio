@@ -5,3 +5,11 @@ user=postgres
 password=mysecretpassword
 dbname=cardapio
 SECRET_KEY=hhheew566#4SW2!HJHgr
+
+#second location:
+HostPort=4040
+host=localhost
+port=5430
+user=postgres
+password=pass 
+dbname=mydatabase

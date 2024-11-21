@@ -175,10 +175,9 @@ func todos_delete(c *gin.Context) {
 
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON inicial"})
 		return
 	}
-
 	for key, value := range data {
 		fmt.Printf("Key: %s, Value: %v\n", key, value)
 	}
@@ -186,12 +185,15 @@ func todos_delete(c *gin.Context) {
 	var id struct {
 		Id uint `json:"Id"`
 	}
-
 	if err := c.ShouldBindJSON(&id); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
-	fmt.Println("Deleting todo with id:", id)
+	fmt.Println("Deleting todo with id:", id.Id)
+	if err := initializers.DB.Delete(&models.Todo{}, id.Id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not delete todo"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted todo"})
 }
