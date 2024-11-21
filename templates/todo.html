@@ -56,7 +56,7 @@
                   {{ end }}
               </div>
               <div class="col-8 pt-2">
-                <input type="text" class="todo_id" name="{{.ID}}" value="{{.ID}}" placeholder="0"> - 
+                <input type="text" class="todo_id" name="{{.ID}}" value="{{.ID}}" hidden> 
                 {{ .Description }}
               </div>
             </div> 
@@ -72,6 +72,31 @@
 
 <script>
 $(document).ready(function() {
+
+  $('.btn-check').click(function(event) {
+    event.preventDefault();
+    const todoItem = $(this).closest('li');
+    const Id = todoItem.find('.todo_id').val();
+
+    fetch('/todos_check', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ Id: parseInt(Id) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+            window.location.href = '/todos';
+        } else if (data.error) {
+            alert(data.error);
+        }
+    });
+  });
+
+
   $('.btn_delete').click(function(event) {
     event.preventDefault();
     const todoItem = $(this).closest('li');

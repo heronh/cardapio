@@ -9,6 +9,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+
+	// "github.com/heronh/cardapio/controllers/todoControllers"
 	"github.com/heronh/cardapio/initializers"
 	"github.com/heronh/cardapio/models"
 	"golang.org/x/crypto/bcrypt"
@@ -66,8 +68,7 @@ func main() {
 		c.HTML(http.StatusOK, "login.html", nil)
 	})
 
-	// Lê banco de dados e lista tarefas
-	r.GET("/todos", authMiddleware(), todos)
+	// r.GET("/todos", authMiddleware(), todoControllers.GetTodos)
 
 	// Salva nova tarefa no banco de dados
 	r.POST("/todos", save_todo)
@@ -81,23 +82,6 @@ func main() {
 		port = "8080" // default port if not specified
 	}
 	r.Run(":" + port)
-}
-
-func todos(c *gin.Context) {
-	var todos []models.Todo
-	if err := initializers.DB.Find(&todos).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve todos"})
-		return
-	}
-
-	// retrieve email and user id from the context
-	Email, _ := c.Get("email")
-	ID, _ := c.Get("ID")
-	c.HTML(http.StatusOK, "todo.html", gin.H{
-		"Todos": todos,
-		"Email": Email,
-		"Id":    ID,
-	})
 }
 
 func save_todo(c *gin.Context) {
