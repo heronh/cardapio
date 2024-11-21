@@ -172,18 +172,27 @@ func logout(c *gin.Context) {
 }
 
 func todos_delete(c *gin.Context) {
-	fmt.Println(c)
-	todo := models.Todo{}
-	if err := c.ShouldBindJSON(&todo); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	fmt.Println("Deleting todo with id:", todo.ID)
 
-	if err := initializers.DB.Delete(&todo).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not delete todo"})
+	var data map[string]interface{}
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
+
+	for key, value := range data {
+		fmt.Printf("Key: %s, Value: %v\n", key, value)
+	}
+
+	var id struct {
+		Id uint `json:"Id"`
+	}
+
+	if err := c.ShouldBindJSON(&id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	}
+	fmt.Println("Deleting todo with id:", id)
+
 	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted todo"})
 }
 

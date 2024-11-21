@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="/static/jquery-3.7.1.min.js"></script>
   <title>{{ .Title }}</title>  
   
   {{ template "head" . }}
@@ -69,25 +71,30 @@
 </div>
 
 <script>
-  $(document).ready(function() {
-    $('.btn_delete').on('click', function() {
-      const ID = $(this).parent().parent().find('.todo_id').val();
-      console.log("ID = ", ID);
-      fetch('/todos_delete', {
+$(document).ready(function() {
+  $('.btn_delete').click(function(event) {
+    event.preventDefault();
+    const todoItem = $(this).closest('li');
+    const Id = todoItem.find('.todo_id').val();
+
+    fetch('/todos_delete', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ ID })
-        })
-        .then(response => {
-          if (response.ok) {
-            window.location.reload();
-          }
-        });
+        body: JSON.stringify({ Id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+            window.location.href = '/todos';
+        } else if (data.error) {
+            alert(data.error);
+        }
     });
   });
-
+});
   // document.getElementById('login-form').addEventListener('submit', function(event) {
   //   event.preventDefault();
   //   const email = document.getElementById('email').value;
