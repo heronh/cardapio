@@ -11,74 +11,68 @@ import (
 )
 
 func UncheckTodo(c *gin.Context) {
-	type RequestData struct {
-		Id int `json:"Id"`
-	}
-	var requestData RequestData
-	if err := c.BindJSON(&requestData); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := check_uncheck(false, c); err != nil {
 		return
 	}
-
-	fmt.Println("Unchecking todo with id:", requestData.Id)
-	var todo models.Todo
-	if err := initializers.DB.Where("id = ?", requestData.Id).First(&todo).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find todo"})
-		return
-	}
-
-	todo.Completed = false
-	todo.Updated_at = time.Now()
-	if err := initializers.DB.Save(&todo).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not update todo"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully unchecked todo"})
 }
 
 func CheckTodo(c *gin.Context) {
-	type RequestData struct {
-		Id int `json:"Id"`
+	if err := check_uncheck(true, c); err != nil {
+		return
 	}
-	var requestData RequestData
-	if err := c.BindJSON(&requestData); err != nil {
+}
+
+func check_uncheck(status bool, c *gin.Context) error {
+
+	Id, err := parseId(c)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		return err
 	}
+	fmt.Println("Checking todo with id:", Id)
 
-	fmt.Println("Checking todo with id:", requestData.Id)
 	var todo models.Todo
-	if err := initializers.DB.Where("id = ?", requestData.Id).First(&todo).Error; err != nil {
+	if err := initializers.DB.Where("id = ?", Id).First(&todo).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find todo"})
-		return
+		return err
 	}
 
-	todo.Completed = true
+	todo.Completed = status
 	todo.Updated_at = time.Now()
 	if err := initializers.DB.Save(&todo).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not update todo"})
-		return
+		return err
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully checked todo"})
+
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully changed status of todo"})
+	return nil
 }
 
 func DeleteTodo(c *gin.Context) {
 
+	Id, err := parseId(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	fmt.Println("Deleting todo with id:", Id)
+	if err := initializers.DB.Delete(&models.Todo{}, Id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not delete todo"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted todo"})
+}
+
+func parseId(c *gin.Context) (int, error) {
 	type RequestData struct {
 		Id int `json:"Id"`
 	}
 	var requestData RequestData
 	if err := c.BindJSON(&requestData); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		return 0, err
 	}
-
-	fmt.Println("Deleting todo with id:", requestData.Id)
-	if err := initializers.DB.Delete(&models.Todo{}, requestData.Id).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not delete todo"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted todo"})
+	return requestData.Id, nil
 }
 
 func SaveTodo(c *gin.Context) {
@@ -96,12 +90,6 @@ func SaveTodo(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find user"})
 		return
 	}
-
-	fmt.Println("Todo fields:")
-	fmt.Println("Description:", todo.Description)
-	fmt.Println("CreatedAt:", todo.Created_at)
-	fmt.Println("UpdatedAt:", todo.Updated_at)
-	fmt.Println("Completed:", todo.Completed)
 
 	if err := initializers.DB.Create(&todo).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create todo"})
