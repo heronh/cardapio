@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 
-	// "github.com/heronh/cardapio/controllers/todoControllers"
+	"github.com/heronh/cardapio/controllers"
 	"github.com/heronh/cardapio/initializers"
 	"github.com/heronh/cardapio/models"
 	"golang.org/x/crypto/bcrypt"
@@ -68,13 +68,12 @@ func main() {
 		c.HTML(http.StatusOK, "login.html", nil)
 	})
 
-	// r.GET("/todos", authMiddleware(), todoControllers.GetTodos)
-
-	// Salva nova tarefa no banco de dados
-	r.POST("/todos", save_todo)
-
-	// Apaga tarefa do banco de dados
-	r.POST("/todos_delete", todos_delete)
+	// DFunções relativas as tarefas
+	r.GET("/todos", authMiddleware(), controllers.GetTodos)
+	r.POST("/todos", controllers.SaveTodo)
+	r.POST("/todos_delete", controllers.DeleteTodo)
+	r.POST("/todos_check", controllers.CheckTodo)
+	r.POST("/todos_uncheck", controllers.UncheckTodo)
 
 	// read port in .env file and starts the server
 	port := os.Getenv("HostPort")
@@ -82,35 +81,6 @@ func main() {
 		port = "8080" // default port if not specified
 	}
 	r.Run(":" + port)
-}
-
-func save_todo(c *gin.Context) {
-	fmt.Println("Creating todo")
-	var todo models.Todo
-	todo.Created_at = time.Now()
-	todo.Updated_at = time.Now()
-	todo.Completed = false
-	todo.Description = c.PostForm("description")
-
-	fmt.Println(c)
-	Id := c.PostForm("Id")
-	var userModel models.User
-	if err := initializers.DB.Where("id = ?", Id).First(&userModel).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find user"})
-		return
-	}
-
-	fmt.Println("Todo fields:")
-	fmt.Println("Description:", todo.Description)
-	fmt.Println("CreatedAt:", todo.Created_at)
-	fmt.Println("UpdatedAt:", todo.Updated_at)
-	fmt.Println("Completed:", todo.Completed)
-
-	if err := initializers.DB.Create(&todo).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create todo"})
-		return
-	}
-	c.Redirect(http.StatusFound, "/todos")
 }
 
 func new_user(c *gin.Context) {
@@ -153,25 +123,6 @@ func logout(c *gin.Context) {
 		Expires: time.Now().Add(-time.Hour),
 	})
 	c.JSON(http.StatusOK, gin.H{"message": "Logged out"})
-}
-
-func todos_delete(c *gin.Context) {
-
-	type RequestData struct {
-		Id int `json:"Id"`
-	}
-	var requestData RequestData
-	if err := c.BindJSON(&requestData); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	fmt.Println("Deleting todo with id:", requestData.Id)
-	if err := initializers.DB.Delete(&models.Todo{}, requestData.Id).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not delete todo"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted todo"})
 }
 
 func login(c *gin.Context) {

@@ -46,11 +46,11 @@
               </div>
               <div class="col-1">
                   {{ if .Completed }}
-                    <button type="submit" class="btn" class="btn-uncheck" title="Completo">
+                    <button class="btn button-uncheck" title="Incompleto">
                       <i class="bi bi-check-square"></i>
                     </button> 
                   {{ else }}
-                    <button type="submit" class="btn" class="btn-check" title="Completo">
+                    <button class="btn button-check" title="Completo">
                       <i class="bi bi-square"></i>
                     </button>
                   {{ end }}
@@ -73,7 +73,30 @@
 <script>
 $(document).ready(function() {
 
-  $('.btn-check').click(function(event) {
+  $('.button-uncheck').click(function(event) {
+    event.preventDefault();
+    const todoItem = $(this).closest('li');
+    const Id = todoItem.find('.todo_id').val();
+
+    fetch('/todos_uncheck', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ Id: parseInt(Id) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+            window.location.href = '/todos';
+        } else if (data.error) {
+            alert(data.error);
+        }
+    });
+  });
+
+  $('.button-check').click(function(event) {
     event.preventDefault();
     const todoItem = $(this).closest('li');
     const Id = todoItem.find('.todo_id').val();
