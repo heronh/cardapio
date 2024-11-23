@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+
+{{ template "head" . }}
+
+<body>
+<div class="container m-3">
+
+  {{ template "navbar" . }}
+  
+    <div class="card">
+        <div class="card-header">
+            Cadastro de empresa:
+        </div>
+
+        <div class="card-body">
+            <form action="/company/create" method="post">
+                <div class="form-group">
+                    <label for="companyName">Nome da Empresa</label>
+                    <input type="text" class="form-control" id="companyName" name="companyName" required>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-5">
+                            <label for="companyAddress">Rua</label>
+                            <input type="text" class="form-control" id="companyAddress" name="companyAddress" required>
+                        </div>
+                        <div class="col-2">
+                            <label for="companyNumber">Número</label>
+                            <input type="text" class="form-control" id="companyNumber" name="companyNumber" required>
+                    </div>
+                        <div class="col-4">
+                            <label for="companyCity">Cidade</label>
+                            <input type="text" class="form-control" id="companyCity" name="companyCity" required>
+                        </div>
+                        <div class="col-1">
+                            <label for="companyState">Estado</label>
+                            <input type="text" class="form-control" id="companyState" name="companyState" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="companyComplement">Complemento</label>
+                            <input type="text" class="form-control" id="companyComplement" name="companyComplement" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="companyZip">CEP</label>
+                            <input type="text" class="form-control" id="companyZip" name="companyZip" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="companyCountry">Pais</label>
+                            <input type="tel" class="form-control" id="companyCountry" name="companyCountry" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="companyPhone">Telefone</label>
+                            <input type="tel" class="form-control" id="companyPhone" name="companyPhone" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="companyEmail">Email</label>
+                            <input type="email" class="form-control" id="companyEmail" name="companyEmail" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="companyWebsite">Website</label>
+                            <input type="url" class="form-control" id="companyWebsite" name="companyWebsite">
+                        </div>
+                        <div class="col-4">
+                            <label for="companyLogo">Logo</label>
+                            <input type="file" class="form-control" id="companyLogo" name="companyLogo">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12">
+                            <span>Cadastro de Administrador, você poderá adicionar outros colaboradores mais tarde</span>
+                        </div>
+                        <div class="col-4">
+                            <label for="adminName">Nome</label>
+                            <input type="text" class="form-control" id="adminName" name="adminName" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="adminEmail">Email</label>
+                            <input type="email" class="form-control" id="adminEmail" name="adminEmail" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="adminPassword">Senha</label>
+                            <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="confirmPassword">Senha</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+
+        <div class="card-footer">
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+{{ template "footer" . }}
+<script>
+$(document).ready(function() {
+});
+</script>

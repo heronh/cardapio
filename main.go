@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"path/filepath"
 	"time"
 
 	"os"
@@ -40,8 +42,13 @@ func main() {
 
 	r := gin.Default()
 
-	// Load HTML templates
-	r.LoadHTMLGlob("templates/*.html")
+	// Serve template files and it's subfolders from the 'templates' directory
+	// load templates recursively
+	files, err := loadTemplates("templates")
+	if err != nil {
+		log.Println(err)
+	}
+	r.LoadHTMLFiles(files...)
 
 	// Serve static files (CSS) from the 'static' directory
 	r.Static("/static", "./static")
@@ -68,7 +75,14 @@ func main() {
 		c.HTML(http.StatusOK, "login.html", nil)
 	})
 
-	// DFunções relativas as tarefas
+	r.GET("/company", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "company.html", gin.H{
+			"Title":   "Company",
+			"Heading": "Company Information",
+		})
+	})
+
+	// Funções relativas as tarefas
 	r.GET("/todos", authMiddleware(), controllers.GetTodos)
 	r.POST("/todos", controllers.SaveTodo)
 	r.POST("/todos_delete", controllers.DeleteTodo)
@@ -217,4 +231,25 @@ func authMiddleware() gin.HandlerFunc {
 		c.Set("ID", claims.Id)
 		c.Next()
 	}
+}
+
+func loadTemplates(root string) (files []string, err error) {
+	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		fileInfo, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+		if fileInfo.IsDir() {
+			if path != root {
+				loadTemplates(path)
+			}
+		} else {
+			files = append(files, path)
+		}
+		return err
+	})
+	return files, err
 }
