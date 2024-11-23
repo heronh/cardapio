@@ -3,60 +3,38 @@
 	<div class="modal modal-xl fade" id="modal-name-id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="staticBackdropLabel">Edição/inserção de amostras</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<form id="form-save" action="/samples/create" method="post" enctype="multipart/form-data">
-						
-						<input hidden id="item-id" name="item_id">
-						<input hidden class="user_id" name="user_id" value="">
-						<input hidden name="context" type="text" value="sample">
 
-						<div class="row">
-							<div class="col-4">
-								<label for="product_id">Escolha o produto</label>
-								<select id="product_id" name="product_id" class="form-select" required>
-									<option selected>Escolha um item abaixo</option>
-								 </select>
-							</div>
-							<div class="col-4">
-								<label for="code">Código de entrada</label>
-								<input id="code" name="code" type="text" class="form-control" readonly/>
-							</div>
-							<div class="col-4">
-								<label for="description">Descrição</label>
-								<input id="description" name="description" type="text" class="form-control" placeholder="Nome do produto" required/>
-							</div>
-							<div class="col-4">
-								<label for="supplier">Fornecedor</label>
-								<input id="supplier" name="supplier" type="text" class="form-control" placeholder="Fornecedor" required/>
-							</div>
-							<div class="col-4">
-								<label for="manufactured_by">Fabricante</label>
-								<input id="manufactured_by" name="manufactured_by" type="text" class="form-control" placeholder="Fabricante"/>
-							</div>
-							<div class="col-4">
-								<label for="pn">Código do fabricante</label>
-								<input id="pn" name="pn" type="text" class="form-control" placeholder="PN do fabricante"/>
-							</div>
-							<div class="col-4">
-								<label for="requested_by">Solicitante</label>
-								<input id="requested_by" name="requested_by" type="text" class="form-control" placeholder="Nome do solicitante"/>
-							</div>
-							<div class="col-4">
-								<label for="contact">Contato no fornecedor</label>
-								<input id="contact" name="contact" type="text" class="form-control" placeholder="Nome do contato"/>
-							</div>
-							
-							
-						</div>
-					</form>
+				<div class="modal-header">
+					<h3 class="modal-title" id="staticBackdropLabel">Nome da sua empresa</h3>
+                </div>
+
+				<div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="company-name">Digite o nome da sua empresa</label>
+                            <input id="company-name-id" name="company-name" type="text" class="form-control"/>
+                        </div>
+                        <div class="col-12">
+                            <label>Campo obrigatório</label>
+                        </div>
+					</div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="company-description">Fale um pouco sobre sua empresa</label>
+                            <textarea id="company-description-id" name="company-description" type="text" class="form-control" rows="4" placeholder="Restaurante tradicional fundado em 2010 voltado a alimentação saudável"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label>Campo opcional e pode ser alterado mais tarde</label>
+                        </div>
+					</div>
+
 				</div>
+
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary" form="form-save" value="Upload">Salvar</button>
+					<button id="modal-description-id" class="btn btn-primary">Próximo</button>
 				</div>
 			</div>
 		</div>
