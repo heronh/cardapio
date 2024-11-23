@@ -75,8 +75,15 @@ func main() {
 		c.HTML(http.StatusOK, "login.html", nil)
 	})
 
+	// Funções relativas ao cadastro de empresas
 	r.GET("/company", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "company.html", gin.H{
+			"Title":   "Company",
+			"Heading": "Company Information",
+		})
+	})
+	r.GET("/company/logo", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "logo.html", gin.H{
 			"Title":   "Company",
 			"Heading": "Company Information",
 		})
