@@ -1,0 +1,47 @@
+{{define "company-save-modal"}}
+<div class="row d-flex justify-content-center">
+	<div class="modal modal-xl fade" id="company-save-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h3 class="modal-title">Salvando usuário e empresa</h3>
+				</div>
+
+				<div class="modal-body">
+					<p>Um usuário administrador será criado.</p>
+					<p>O administrador pode criar outros usuários para administrar ou gerenciar o sistema.</p>
+					<p>Os dados da empresa serão salvos.</p>
+					<p>Os dados da empresa podem ser alterados a qualquer momento pelo administrador.</p>
+					<p>Os dados do usuário gerente podem ser alterados a qualquer momento pelo administrador.</p>
+
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" id="termsCheck">
+						<label class="form-check-label" for="termsCheck">
+							Eu li e aceito os termos e condições
+						</label>
+					</div>
+
+					<hr>
+					<form>
+						<div class="mb-3">
+							<label for="password" class="form-label">Senha</label>
+							<input type="password" class="form-control border border-danger" id="password" placeholder="Digite a senha">
+						</div>
+						<div class="mb-3">
+							<label for="confirm-password" class="form-label">Confirme a Senha</label>
+							<input type="password" class="form-control border border-danger" id="confirm-password" placeholder="Confirme a senha">
+						</div>
+					</form>
+
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" id="btn-save-previous" class="btn btn-outline-success">Anterior</button>
+					<button type="button" id="btn-save-next" class="btn btn-outline-danger disabled">Salvar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{end}}

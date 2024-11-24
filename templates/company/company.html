@@ -18,6 +18,7 @@
 {{ template "company-address-modal" . }}
 {{ template "company-contact-modal" . }}
 {{ template "company-sumary-modal" . }}
+{{ template "company-save-modal" . }}
 
 </div>
 
@@ -73,6 +74,20 @@ $('#btn-sumary-previous').click(function() {
 	$('#company-contact-modal').modal('show');
 });
 
+$('#btn-sumary-next').click(function() {
+	$('#company-sumary-modal').modal('hide');
+	$('#company-save-modal').modal('show');
+});
+
+$('#btn-save-previous').click(function() {
+	$('#company-save-modal').modal('hide');
+	$('#company-sumary-modal').modal('show');
+});
+
+$('#btn-save-next').click(function() {
+	$('#company-save-modal').modal('hide');
+});
+
 function checkSumary() {
 
 	var email = $('#company-email-id').val();
@@ -89,8 +104,9 @@ function checkSumary() {
 		},
 		error: function() {
 			$('#btn-sumary-next').removeClass('disabled');
-			$('#btn-sumary-next').removeClass('border border-danger').addClass('border border-success');
-			alert('Clique em Salvar para continuar.');
+			$('#btn-sumary-next').removeClass('btn btn-outline-danger disabled').addClass('btn btn-outline-success');
+			$('#company-sumary-modal').modal('hide');
+			$('#company-save-modal').modal('show');
 		}
 	});
 }

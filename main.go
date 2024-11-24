@@ -84,12 +84,12 @@ func main() {
 	})
 	r.POST("/company-check-email", func(c *gin.Context) {
 		email := c.PostForm("email")
-		var company models.Company
-		if err := initializers.DB.Where("email = ?", email).First(&company).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Email não cadastrado"})
+		var user models.User
+		if err := initializers.DB.Where("email = ?", email).First(&user).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"message": "Email cadastrado"})
+		c.JSON(http.StatusOK, gin.H{"message": "User found", "user": user})
 	})
 
 	// Funções relativas as tarefas
