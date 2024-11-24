@@ -29,11 +29,24 @@ $(document).ready(function() {
 });
 
 $('#btn-name-next').click(function() {
+	if ( $('#company-name-id').val() == '' ) {
+		alert('O nome da empresa é obrigatório.');
+		$('#company-name-id').removeClass('border border-success').addClass('border border-danger');
+		return;
+	}
+	$('#company-name-id').removeClass('border border-danger').addClass('border border-success');
 	$('#company-name-modal').modal('hide');
 	$('#company-address-modal').modal('show');
 });
 
 $('#btn-address-previous').click(function() {
+	if ( $('#company-city-id').val() == '' ) {
+		alert('A cidade é obrigatória.');
+		$('#company-city-id').removeClass('border border-success').addClass('border border-danger');
+		return;
+	}
+
+	$('#company-city-id').removeClass('border border-danger').addClass('border border-success');
 	$('#company-address-modal').modal('hide');
 	$('#company-name-modal').modal('show');
 });
@@ -52,6 +65,7 @@ $('#btn-contact-next').click(function() {
 	$('#company-contact-modal').modal('hide');
 	$('#company-sumary-modal').modal('show');
 	fillSumary();
+	checkSumary();
 });
 
 $('#btn-sumary-previous').click(function() {
@@ -59,6 +73,27 @@ $('#btn-sumary-previous').click(function() {
 	$('#company-contact-modal').modal('show');
 });
 
+function checkSumary() {
+
+	var email = $('#company-email-id').val();
+
+	$.ajax({
+		url: '/company-check-email',
+		type: 'POST',
+		data: { email: email },
+		success: function(response) {
+			alert('O email já está em uso.\nCadastre outro email.');
+			$('#company-email-id').removeClass('border border-success').addClass('border border-danger');
+			$('#company-sumary-modal').modal('hide');
+			$('#company-contact-modal').modal('show');
+		},
+		error: function() {
+			$('#btn-sumary-next').removeClass('disabled');
+			$('#btn-sumary-next').removeClass('border border-danger').addClass('border border-success');
+			alert('Clique em Salvar para continuar.');
+		}
+	});
+}
 function fillSumary() {
 	var name = $('#company-name-id').val();
 	var description = $('#company-description-id').val();

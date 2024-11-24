@@ -82,11 +82,14 @@ func main() {
 			"Heading": "Company Information",
 		})
 	})
-	r.GET("/company/logo", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "logo.html", gin.H{
-			"Title":   "Company",
-			"Heading": "Company Information",
-		})
+	r.POST("/company-check-email", func(c *gin.Context) {
+		email := c.PostForm("email")
+		var company models.Company
+		if err := initializers.DB.Where("email = ?", email).First(&company).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Email não cadastrado"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"message": "Email cadastrado"})
 	})
 
 	// Funções relativas as tarefas
