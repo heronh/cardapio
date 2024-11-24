@@ -6,20 +6,18 @@
 <body>
 
 <div class="centered-container">
-    <div class="text-center">
-        <h1>Vamos começar!</h1>
-        <button id="btn-next" class="btn btn-outline-success">Iniciar</button>
+   <div class="text-center">
+      <h1>Vamos começar!</h1>
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modal-name-id">
+         Preencha o formulário para começar
+      </button>
+   </div>
+</div>
 
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-name-id">
-            Launch demo modal
-        </button>
-    </div>
-
-   {{ template "company-logo-modal" . }}
-	{{ template "company-address-modal" . }}
-	{{ template "company-contact-modal" . }}
-	{{ template "company-sumary-modal" . }}
+{{ template "company-logo-modal" . }}
+{{ template "company-address-modal" . }}
+{{ template "company-contact-modal" . }}
+{{ template "company-sumary-modal" . }}
 	
 
 
@@ -37,13 +35,22 @@ $(document).ready(function() {
         window.location.href = '/company/logo';
     });
 
-    $('#modal-sumary-id').modal('show');
+    //$('#modal-sumary-id').modal('show');
 });
 
 $('#btn-name-id').click(function() {
 	$('#modal-name-id').modal('hide');
+	$('#modal-address-id').modal('show');
+});
+
+$('#btn-address-id').click(function() {
+	$('#modal-address-id').modal('hide');
 	$('#modal-contact-id').modal('show');
 });
 
+$('#btn-contact-id').click(function() {
+	$('#modal-contact-id').modal('hide');
+	$('#modal-sumary-id').modal('show');
+});
 
 </script>
