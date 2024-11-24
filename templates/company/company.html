@@ -8,49 +8,83 @@
 <div class="centered-container">
    <div class="text-center">
       <h1>Vamos começar!</h1>
-      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modal-name-id">
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#company-name-modal">
          Preencha o formulário para começar
       </button>
    </div>
 </div>
 
-{{ template "company-logo-modal" . }}
+{{ template "company-name-modal" . }}
 {{ template "company-address-modal" . }}
 {{ template "company-contact-modal" . }}
 {{ template "company-sumary-modal" . }}
-	
-
 
 </div>
-    
-
 
 </body>
 
 {{ template "footer" . }}
 <script>
 $(document).ready(function() {
-
-    $('#btn-next').click(function() {
-        window.location.href = '/company/logo';
-    });
-
-    //$('#modal-sumary-id').modal('show');
 });
 
-$('#btn-name-id').click(function() {
-	$('#modal-name-id').modal('hide');
-	$('#modal-address-id').modal('show');
+$('#btn-name-next').click(function() {
+	$('#company-name-modal').modal('hide');
+	$('#company-address-modal').modal('show');
 });
 
-$('#btn-address-id').click(function() {
-	$('#modal-address-id').modal('hide');
-	$('#modal-contact-id').modal('show');
+$('#btn-address-previous').click(function() {
+	$('#company-address-modal').modal('hide');
+	$('#company-name-modal').modal('show');
 });
 
-$('#btn-contact-id').click(function() {
-	$('#modal-contact-id').modal('hide');
-	$('#modal-sumary-id').modal('show');
+$('#btn-address-next').click(function() {
+	$('#company-address-modal').modal('hide');
+	$('#company-contact-modal').modal('show');
 });
+
+$('#btn-contact-previous').click(function() {
+	$('#company-contact-modal').modal('hide');
+	$('#company-address-modal').modal('show');
+});
+
+$('#btn-contact-next').click(function() {
+	$('#company-contact-modal').modal('hide');
+	$('#company-sumary-modal').modal('show');
+	fillSumary();
+});
+
+$('#btn-sumary-previous').click(function() {
+	$('#company-sumary-modal').modal('hide');
+	$('#company-contact-modal').modal('show');
+});
+
+function fillSumary() {
+	var name = $('#company-name-id').val();
+	var description = $('#company-description-id').val();
+	var street = $('#company-street-id').val();
+	var number = $('#company-number-id').val();
+	var complement = $('#company-complement-id').val();
+	var city = $('#company-city-id').val();
+	var state = $('#company-state-id').val();
+	var zip = $('#company-zip-id').val();
+	var country = $('#company-country-id').val();
+	var phone = $('#company-phone-id').val();
+	var admin = $('#company-admin-id').val();
+	var email = $('#company-email-id').val();
+
+	$('#p-name-id').text('Nome: ' + name);
+	$('#p-description-id').text('Descrição: ' + description);
+	$('#p-street-id').text('Rua: ' + street);
+	$('#p-number-id').text('Número: ' + number);
+	$('#p-complement-id').text('Complemento: ' + complement);
+	$('#p-city-id').text('Cidade: ' + city);
+	$('#p-state-id').text('Estado: ' + state);
+	$('#p-zip-id').text('CEP: ' + zip);
+	$('#p-country-id').text('País: ' + country);
+	$('#p-phone-id').text('Telefone: ' + phone);
+	$('#p-admin-id').text('Administrador: ' + admin);
+	$('#p-email-id').text('Email: ' + email);
+}
 
 </script>
