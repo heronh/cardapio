@@ -17,6 +17,9 @@
     </div>
 
     {{ template "company-logo-modal" . }}
+	 {{ template "company-address-modal" . }}
+	 {{ template "company-contact-modal" . }}
+
 </div>
     
 
@@ -31,7 +34,13 @@ $(document).ready(function() {
         window.location.href = '/company/logo';
     });
 
-    $('#modal-name-id').modal('show');
-
+    $('#modal-contact-id').modal('show');
 });
+
+$('#btn-name-id').click(function() {
+	$('#modal-name-id').modal('hide');
+	$('#modal-contact-id').modal('show');
+});
+
+
 </script>

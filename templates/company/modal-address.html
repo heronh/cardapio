@@ -1,0 +1,59 @@
+{{define "company-address-modal"}}
+<div class="row d-flex justify-content-center">
+	<div class="modal modal-xl fade" id="modal-address-id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h3 class="modal-title" id="staticBackdropLabel">Endereço</h3>
+				</div>
+
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-9">
+							<label for="company-street">Rua</label>
+							<input id="company-street-id" name="company-street" type="text" class="form-control"/>
+						</div>
+						<div class="col-3">
+							<label for="company-number">N.</label>
+							<input id="company-number-id" name="company-number" type="text" class="form-control"/>
+						</div>
+						<div class="col-12">
+							<label for="company-complement">Complemento</label>
+							<input id="company-complement-id" name="company-complement" type="text" class="form-control" placeholder="Portaria, ponto de referencia, etc"/>
+						</div>
+
+						<div class="col-9">
+							<label for="company-city">Cidade</label>
+							<input id="company-city-id" name="company-city" type="text" class="form-control"/>
+						</div>
+						<div class="col-3">
+							<label for="company-state">Estado</label>
+							<input id="company-state-id" name="company-state" type="text" class="form-control"/>
+						</div>
+
+						<div class="col-6">
+							<label for="company-zip">CEP</label>
+							<input id="company-zip-id" name="company-zip" type="text" class="form-control" rows="4"></input>
+						</div>
+						<div class="col-6">
+							<label for="company-country">País</label>
+							<input id="company-country-id" name="company-country" type="text" class="form-control" rows="4"></input>
+						</div>
+	
+						<div class="col-12">
+							<label for="company-phone">Telefone</label>
+							<input id="company-phone-id" name="company-phone" type="text" class="form-control"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button id="modal-description-id" class="btn btn-primary">Próximo</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{end}}
