@@ -16,9 +16,12 @@
         </button>
     </div>
 
-    {{ template "company-logo-modal" . }}
-	 {{ template "company-address-modal" . }}
-	 {{ template "company-contact-modal" . }}
+   {{ template "company-logo-modal" . }}
+	{{ template "company-address-modal" . }}
+	{{ template "company-contact-modal" . }}
+	{{ template "company-sumary-modal" . }}
+	
+
 
 </div>
     
@@ -34,7 +37,7 @@ $(document).ready(function() {
         window.location.href = '/company/logo';
     });
 
-    $('#modal-contact-id').modal('show');
+    $('#modal-sumary-id').modal('show');
 });
 
 $('#btn-name-id').click(function() {
