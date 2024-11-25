@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"path/filepath"
-	"time"
 
 	"os"
 
@@ -14,22 +12,7 @@ import (
 
 	"github.com/heronh/cardapio/controllers"
 	"github.com/heronh/cardapio/initializers"
-	"github.com/heronh/cardapio/models"
-	"golang.org/x/crypto/bcrypt"
 )
-
-var jwtKey = []byte("my_secret_key")
-
-type Credentials struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type Claims struct {
-	Email string `json:"email"`
-	Id    uint   `json:"id"`
-	jwt.RegisteredClaims
-}
 
 func init() {
 	// Load the environment variables
@@ -55,9 +38,6 @@ func main() {
 	// Serve Bootstrap icons from the 'node_modules/bootstrap-icons' directory
 	r.Static("/icons", "./static/bootstrap-icons")
 
-	r.POST("/login", login)
-	r.GET("/logout", logout)
-	r.GET("register", register)
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"Title":   "Benvindo",
@@ -67,30 +47,19 @@ func main() {
 		})
 	})
 
-	r.POST("/register", new_user)
 	r.GET("/welcome", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "welcome.html", nil)
 	})
-	r.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", nil)
-	})
+
+	r.POST("/login", controllers.Login)
+	r.GET("/logout", controllers.Logout)
+	r.GET("register", controllers.Register)
+	r.POST("/register", controllers.New_user)
+	r.GET("/login", controllers.LoginPage)
 
 	// Funções relativas ao cadastro de empresas
-	r.GET("/company", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "company.html", gin.H{
-			"Title":   "Company",
-			"Heading": "Company Information",
-		})
-	})
-	r.POST("/company-check-email", func(c *gin.Context) {
-		email := c.PostForm("email")
-		var user models.User
-		if err := initializers.DB.Where("email = ?", email).First(&user).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"message": "User found", "user": user})
-	})
+	r.GET("/company", controllers.Company)
+	r.POST("/user-check-email", controllers.CheckEmail)
 
 	// Funções relativas as tarefas
 	r.GET("/todos", authMiddleware(), controllers.GetTodos)
@@ -105,98 +74,6 @@ func main() {
 		port = "8080" // default port if not specified
 	}
 	r.Run(":" + port)
-}
-
-func new_user(c *gin.Context) {
-	user := models.User{}
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	// hash the password
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to hash the password",
-		})
-		return
-	}
-	user.Password = string(hash)
-
-	if err := initializers.DB.Create(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Usuário criado com sucesso"})
-}
-
-func register(c *gin.Context) {
-	c.HTML(http.StatusOK, "register.html", gin.H{
-		"Title":           "Cadastro",
-		"Heading":         "Cadastro!",
-		"Message":         "Cadastro de usuário",
-		"register_active": "h5",
-	})
-}
-
-func logout(c *gin.Context) {
-	http.SetCookie(c.Writer, &http.Cookie{
-		Name:    "token",
-		Value:   "",
-		Expires: time.Now().Add(-time.Hour),
-	})
-	c.JSON(http.StatusOK, gin.H{"message": "Logged out"})
-}
-
-func login(c *gin.Context) {
-	fmt.Println(c)
-	creds := Credentials{}
-	if err := c.ShouldBindJSON(&creds); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	// hash the password
-	hash, err := bcrypt.GenerateFromPassword([]byte(creds.Password), bcrypt.DefaultCost)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to hash the password",
-		})
-		return
-	}
-	creds.Password = string(hash)
-
-	// read data from database
-	var user models.User
-	if err := initializers.DB.Where("email = ?", creds.Email).First(&user).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não cadastrado"})
-		return
-	}
-
-	expirationTime := time.Now().Add(50 * time.Minute)
-	claims := &Claims{
-		Email: creds.Email,
-		Id:    user.ID,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(expirationTime),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenStr, err := token.SignedString(jwtKey)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create token"})
-		return
-	}
-
-	http.SetCookie(c.Writer, &http.Cookie{
-		Name:    "token",
-		Value:   tokenStr,
-		Expires: expirationTime,
-	})
-
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged in"})
 }
 
 func authMiddleware() gin.HandlerFunc {
@@ -214,10 +91,10 @@ func authMiddleware() gin.HandlerFunc {
 		}
 
 		tokenStr := cookie.Value
-		claims := &Claims{}
+		claims := &controllers.Claims{}
 
 		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-			return jwtKey, nil
+			return controllers.JwtKey, nil
 		})
 
 		if err != nil {
