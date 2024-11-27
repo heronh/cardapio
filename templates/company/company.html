@@ -14,19 +14,30 @@
    </div>
 </div>
 
+
 {{ template "company-name-modal" . }}
 {{ template "company-address-modal" . }}
 {{ template "company-contact-modal" . }}
 {{ template "company-sumary-modal" . }}
 {{ template "company-save-modal" . }}
 
+
 </div>
 
 </body>
 
 {{ template "footer" . }}
+
 <script>
 $(document).ready(function() {
+});
+
+$('#termsCheckId').change(function() {
+	if ($(this).is(':checked')) {
+		$('#termsCheckLabelId').removeClass('text-danger').addClass('text-success');
+	} else {
+		$('#termsCheckLabelId').removeClass('text-success').addClass('text-danger');
+	}
 });
 
 $('#btn-name-next').click(function() {
@@ -88,6 +99,14 @@ $('#btn-save-next').click(function() {
 	$('#company-save-modal').modal('hide');
 });
 
+function createToasts()
+{
+	var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+	var toastList = toastElList.map(function (toastEl) {
+		return new bootstrap.Toast(toastEl);
+	});
+}
+
 function checkSumary() {
 
 	var email = $('#company-email-id').val();
@@ -110,6 +129,7 @@ function checkSumary() {
 		}
 	});
 }
+
 function fillSumary() {
 	var name = $('#company-name-id').val();
 	var description = $('#company-description-id').val();
