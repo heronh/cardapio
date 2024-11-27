@@ -38,7 +38,49 @@ $('#termsCheckId').change(function() {
 	} else {
 		$('#termsCheckLabelId').removeClass('text-success').addClass('text-danger');
 	}
+	enableSaveButton();
 });
+
+$('#passwordId').on('input', function() {
+	if ($(this).val().length < 8) {
+		$(this).removeClass('border border-success').addClass('border border-danger');
+	} else {
+		$(this).removeClass('border border-danger').addClass('border border-success');
+	}
+	enableSaveButton();
+});
+
+$('#confirmPasswordId').on('input', function() {
+	let confirmPassword = $('#confirmPasswordId').val();
+	let password = $('#passwordId').val();
+	let len = $(this).val().length;
+
+	if ( len < 8 || password != confirmPassword ) {
+		$(this).removeClass('border border-success').addClass('border border-danger');
+	} else {
+		$(this).removeClass('border border-danger').addClass('border border-success');
+	}
+	enableSaveButton();
+});
+
+function enableSaveButton() {
+
+	let confirmPassword = $('#confirmPasswordId').val();
+	let password = $('#passwordId').val();
+	let len = $('#passwordId').val().length;
+	let checked = $('#termsCheckId').is(':checked');
+	console.log(len);
+	console.log(password);
+	console.log(confirmPassword);
+	console.log(checked);
+
+	if ( checked && len >= 8 && ( password == confirmPassword ) ) {
+		//$('#btn-save-next').removeClass('disabled');
+		$('#btn-save-next').removeClass('btn btn-outline-danger disabled').addClass('btn btn-outline-success');
+	} else {
+		$('#btn-save-next').removeClass('btn btn-outline-success').addClass('btn btn-outline-danger disabled');
+	}
+}
 
 $('#btn-name-next').click(function() {
 	if ( $('#company-name-id').val() == '' ) {
