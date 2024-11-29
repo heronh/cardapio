@@ -60,6 +60,7 @@ func main() {
 	// Funções relativas ao cadastro de empresas
 	r.GET("/company", controllers.Company)
 	r.POST("/user-check-email", controllers.CheckEmail)
+	r.POST("/company-save", controllers.CompanySave)
 
 	// Funções relativas as tarefas
 	r.GET("/todos", authMiddleware(), controllers.GetTodos)

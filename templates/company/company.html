@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR"> 
+<html lang="pt-BR">
 
 {{ template "head" . }}
 
@@ -8,9 +8,19 @@
 <div class="centered-container">
    <div class="text-center">
       <h1>Vamos começar!</h1>
+
+		<p>
       <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#company-name-modal">
          Preencha o formulário para começar
       </button>
+		</p>
+
+		<p>
+			<button id="btn-save-test" type="button" class="btn btn-outline-success">
+				Salvar usuário/empresa
+			</button>
+		</p>
+	
    </div>
 </div>
 
@@ -24,13 +34,44 @@
 
 </div>
 
-</body>
-
 {{ template "footer" . }}
+</body>
+</html>
+
 
 <script>
 $(document).ready(function() {
+	//setTimeout(sendJsonData, 2000);
 });
+
+async function sendJsonData() {
+  const data = {
+    name: "John Doe",
+    age: 30,
+    city: "New York"
+  };
+
+  try {
+    const response = await fetch('/company-save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');   
+
+    }
+
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.error('Error:', error);   
+
+  }
+}
 
 $('#termsCheckId').change(function() {
 	if ($(this).is(':checked')) {
@@ -69,10 +110,6 @@ function enableSaveButton() {
 	let password = $('#passwordId').val();
 	let len = $('#passwordId').val().length;
 	let checked = $('#termsCheckId').is(':checked');
-	console.log(len);
-	console.log(password);
-	console.log(confirmPassword);
-	console.log(checked);
 
 	if ( checked && len >= 8 && ( password == confirmPassword ) ) {
 		//$('#btn-save-next').removeClass('disabled');
@@ -137,17 +174,28 @@ $('#btn-save-previous').click(function() {
 	$('#company-sumary-modal').modal('show');
 });
 
-$('#btn-save-next').click(function() {
-	$('#company-save-modal').modal('hide');
-});
+$('#btn-save-test').click(function() {
 
-function createToasts()
-{
-	var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-	var toastList = toastElList.map(function (toastEl) {
-		return new bootstrap.Toast(toastEl);
+	const name= "Empresa Teste";
+
+	fetch('/company-save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({name})
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.message) {
+			alert(data.message);
+			window.location.href = '/company';
+		} else if (data.error) {
+			alert(data.error);
+		}
 	});
-}
+});	
+
 
 function checkSumary() {
 

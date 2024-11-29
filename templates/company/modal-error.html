@@ -1,0 +1,25 @@
+{{define "company-greetings-modal"}}
+<div class="row d-flex justify-content-center">
+	<div class="modal modal-xl fade" id="company-greetings-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h3 class="modal-title text-danger">Erro no seu cadastro</h3>
+				</div>
+
+				<div class="modal-body">
+                    <p>O email utilizado já existe</p>
+                    <p>Por favor, utilize outro email</p>
+                    <p>Volte a o menu anterior e altere seu email</p>
+                    
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" id="btn-error-previous" class="btn btn-outline-dangerd">Recadastrar email</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{end}}
