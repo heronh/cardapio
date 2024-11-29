@@ -112,12 +112,33 @@ function enableSaveButton() {
 	let checked = $('#termsCheckId').is(':checked');
 
 	if ( checked && len >= 8 && ( password == confirmPassword ) ) {
-		//$('#btn-save-next').removeClass('disabled');
 		$('#btn-save-next').removeClass('btn btn-outline-danger disabled').addClass('btn btn-outline-success');
 	} else {
 		$('#btn-save-next').removeClass('btn btn-outline-success').addClass('btn btn-outline-danger disabled');
 	}
 }
+
+$('btn-save-next').click(function() {
+	let password = $('#passwordId').val();
+	let email = $('#company-email-id').val();
+	let name = $('#company-name-id').val();
+
+	fetch('/user-save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({name, email, password})
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.message) {
+			alert(data.message);
+		} else if (data.error) {
+			alert(data.error);
+		}
+	});
+});
 
 $('#btn-name-next').click(function() {
 	if ( $('#company-name-id').val() == '' ) {
@@ -175,28 +196,63 @@ $('#btn-save-previous').click(function() {
 });
 
 $('#btn-save-test').click(function() {
+	save_company();
+});
 
-	const name= "Empresa Teste";
+function save_company() {
+	const name = "Minha Empresa";
+	const description = "Empresa de teste";
+	const category = "Restaurantes veganos";
+	const street = "Rua das Flores";
+	const number = "123";
+	const complement = "Sala 1";
+	const city = "São Paulo";
+	const state = "SP";
+	const zip = "12345-678";
+	const country = "Brasil";
+	const phone = "11 1234-5678";
+	const website = "www.minhaempresa.com.br";
 
 	fetch('/company-save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({name})
+		body: JSON.stringify({name, description, category, street, number, complement, city, state, zip, country, phone, website })
 	})
 	.then(response => response.json())
 	.then(data => {
 		if (data.message) {
 			alert(data.message);
-			window.location.href = '/company';
 		} else if (data.error) {
 			alert(data.error);
 		}
 	});
-});	
+}
 
 
+function save_user(CompanyId) {
+	const name= "João da Silva";
+	const email = "meuemail@gmail.com";
+	const password = "12345678";
+
+	fetch('/user-save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({name, email, password})
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.message) {
+			alert(data.message);
+		} else if (data.error) {
+			alert(data.error);
+		}
+	});
+}
+	
 function checkSumary() {
 
 	var email = $('#company-email-id').val();

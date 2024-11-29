@@ -56,6 +56,7 @@ func main() {
 	r.GET("register", controllers.Register)
 	r.POST("/register", controllers.New_user)
 	r.GET("/login", controllers.LoginPage)
+	r.POST("/user-save", controllers.UserSave)
 
 	// Funções relativas ao cadastro de empresas
 	r.GET("/company", controllers.Company)

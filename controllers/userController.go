@@ -25,12 +25,51 @@ type Claims struct {
 
 var JwtKey = []byte("my_secret_key")
 
+func UserSave(c *gin.Context) {
+	fmt.Println("UserSave")
+
+	var user = models.User{}
+	if err := c.ShouldBindJSON(&user); err != nil {
+		fmt.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	user.UpdatedAt = time.Now()
+	user.CreatedAt = time.Now()
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to hash the password",
+		})
+		return
+	}
+	user.Password = string(hash)
+
+	// save the user to the database
+	if err := initializers.DB.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not save user"})
+		return
+	}
+
+	// Retrieve the ID of the saved user
+	if err := initializers.DB.Last(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve user ID"})
+		return
+	}
+
+	// Send a response
+	fmt.Println(user)
+	c.JSON(http.StatusOK, gin.H{"message": "Data received successfully"})
+}
+
 func New_user(c *gin.Context) {
 	user := models.User{}
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
 
 	// hash the password
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)

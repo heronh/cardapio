@@ -50,11 +50,16 @@
                   {{ end }}
               </div>
               <div class="col-2 pt-2">
-                {{ .Updated_at.Format "02/01/2006" }}
+                {{ .UpdatedAt.Format "02/01/2006" }}
+
               </div>
               <div class="col-8 pt-2">
-                <input type="text" class="todo_id" name="{{.ID}}" value="{{.ID}}" hidden> 
-                {{ .Description }}
+                <input type="text" class="todo_id" name="{{.ID}}" value="{{.ID}}" hidden>
+                {{ if .Completed }}
+                  <span><del>{{ .Description }}</del></span>
+                {{ else }}
+                  <span>{{ .Description }}</span>
+                {{ end }}
               </div>
             </div> 
 
@@ -68,7 +73,10 @@
 </div>
 
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
+    $('#description').focus();
+    $('html, body').animate({ scrollTop: 0 }, 'fast');
+  });
 
   $('.button-uncheck').click(function(event) {
     event.preventDefault();
@@ -104,9 +112,7 @@ $(document).ready(function() {
             alert(data.error);
         }
     });
-
   }
 
-});
 
 </script>

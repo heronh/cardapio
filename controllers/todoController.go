@@ -36,9 +36,9 @@ func check_uncheck(status bool, c *gin.Context) error {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not find todo"})
 		return err
 	}
-
 	todo.Completed = status
-	todo.Updated_at = time.Now()
+	todo.UpdatedAt = time.Now()
+
 	if err := initializers.DB.Save(&todo).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not update todo"})
 		return err
@@ -78,8 +78,8 @@ func parseId(c *gin.Context) (int, error) {
 func SaveTodo(c *gin.Context) {
 	fmt.Println("Creating todo")
 	var todo models.Todo
-	todo.Created_at = time.Now()
-	todo.Updated_at = time.Now()
+	todo.CreatedAt = time.Now()
+	todo.UpdatedAt = time.Now()
 	todo.Completed = false
 	todo.Description = c.PostForm("description")
 
@@ -101,7 +101,7 @@ func SaveTodo(c *gin.Context) {
 func GetTodos(c *gin.Context) {
 
 	var todos []models.Todo
-	if err := initializers.DB.Order("completed, updated_at desc").Find(&todos).Error; err != nil {
+	if err := initializers.DB.Order("completed, updated_at asc").Find(&todos).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve todos"})
 		return
 	}
