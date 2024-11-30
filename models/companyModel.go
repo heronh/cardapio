@@ -2,9 +2,12 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Company struct {
+	gorm.Model
 	ID          uint      `json:"id" gorm:"primary_key"`
 	CreatedAt   time.Time `json:"createdat"`
 	UpdatedAt   time.Time `json:"updatedat"`
@@ -21,4 +24,5 @@ type Company struct {
 	PostalCode  string    `gorm:"type:varchar(20)"`
 	Phone       string    `gorm:"type:varchar(20)"`
 	Website     string    `gorm:"type:varchar(100)"`
+	Users       []User    `gorm:"foreignKey:CompanyId"`
 }

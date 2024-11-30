@@ -8,19 +8,11 @@
 <div class="centered-container">
    <div class="text-center">
       <h1>Vamos começar!</h1>
-
 		<p>
       <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#company-name-modal">
          Preencha o formulário para começar
       </button>
 		</p>
-
-		<p>
-			<button id="btn-save-test" type="button" class="btn btn-outline-success">
-				Salvar usuário/empresa
-			</button>
-		</p>
-	
    </div>
 </div>
 
@@ -118,28 +110,6 @@ function enableSaveButton() {
 	}
 }
 
-$('btn-save-next').click(function() {
-	let password = $('#passwordId').val();
-	let email = $('#company-email-id').val();
-	let name = $('#company-name-id').val();
-
-	fetch('/user-save', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({name, email, password})
-	})
-	.then(response => response.json())
-	.then(data => {
-		if (data.message) {
-			alert(data.message);
-		} else if (data.error) {
-			alert(data.error);
-		}
-	});
-});
-
 $('#btn-name-next').click(function() {
 	if ( $('#company-name-id').val() == '' ) {
 		alert('O nome da empresa é obrigatório.');
@@ -195,12 +165,20 @@ $('#btn-save-previous').click(function() {
 	$('#company-sumary-modal').modal('show');
 });
 
-$('#btn-save-test').click(function() {
+$('#btn-save-next').click(function() {
 	save_company();
 });
 
 function save_company() {
-	const name = "Minha Empresa";
+	const randomNames = [
+		"Empresa Alpha", "Beta Corp", "Gamma Ltda", "Delta Inc", "Epsilon LLC",
+		"Zeta Enterprises", "Eta Solutions", "Theta Services", "Iota Innovations", "Kappa Technologies",
+		"Lambda Systems", "Mu Industries", "Nu Networks", "Xi Dynamics", "Omicron Holdings",
+		"Pi Ventures", "Rho Partners", "Sigma Consulting", "Tau Logistics", "Upsilon Media",
+		"Phi Productions", "Chi Designs", "Psi Marketing", "Omega Group", "Alpha Beta Co.",
+		"Beta Gamma Inc.", "Gamma Delta Ltd.", "Delta Epsilon LLC", "Epsilon Zeta Corp", "Zeta Eta Enterprises"
+	];
+	const name = randomNames[Math.floor(Math.random() * randomNames.length)];
 	const description = "Empresa de teste";
 	const category = "Restaurantes veganos";
 	const street = "Rua das Flores";
@@ -223,7 +201,7 @@ function save_company() {
 	.then(response => response.json())
 	.then(data => {
 		if (data.message) {
-			alert(data.message);
+			save_user(data.CompanyId);
 		} else if (data.error) {
 			alert(data.error);
 		}
@@ -233,15 +211,15 @@ function save_company() {
 
 function save_user(CompanyId) {
 	const name= "João da Silva";
-	const email = "meuemail@gmail.com";
 	const password = "12345678";
+	const email = "test" + Math.floor(Math.random() * 1000) + "@example.com";
 
 	fetch('/user-save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({name, email, password})
+		body: JSON.stringify({name, email, password, CompanyId})
 	})
 	.then(response => response.json())
 	.then(data => {

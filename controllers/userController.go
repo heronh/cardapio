@@ -26,8 +26,8 @@ type Claims struct {
 var JwtKey = []byte("my_secret_key")
 
 func UserSave(c *gin.Context) {
-	fmt.Println("UserSave")
 
+	fmt.Println("UserSave")
 	var user = models.User{}
 	if err := c.ShouldBindJSON(&user); err != nil {
 		fmt.Println("error: ", err)
@@ -36,6 +36,7 @@ func UserSave(c *gin.Context) {
 	}
 	user.UpdatedAt = time.Now()
 	user.CreatedAt = time.Now()
+	fmt.Println("User: ", user)
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
