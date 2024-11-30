@@ -19,12 +19,12 @@
 					<div class="row">
 						<div class="col-12">
 							<label for="company-admin-id">Nome do administrador</label>
-							<input id="company-admin-id" name="company-admin" type="text" class="form-control border border-danger" value="Heron"/>
+							<input id="company-admin-id" name="company-admin" type="text" class="form-control border border-danger" value="{{ .name }}"/>
 						</div>
 
 						<div class="col-12">
 							<label for="company-email-id">Email usado para recuperação de senha</label>
-							<input id="company-email-id" name="company-email" type="text" class="form-control border border-danger" value="heron@gmail.com"/>
+							<input id="company-email-id" name="company-email" type="text" class="form-control border border-danger" value="{{ .email }}"/>
 						</div>
 
 						<div class="col-12">

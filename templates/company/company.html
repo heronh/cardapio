@@ -34,36 +34,8 @@
 <script>
 $(document).ready(function() {
 	//setTimeout(sendJsonData, 2000);
+	enableSaveButton();
 });
-
-async function sendJsonData() {
-  const data = {
-    name: "John Doe",
-    age: 30,
-    city: "New York"
-  };
-
-  try {
-    const response = await fetch('/company-save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');   
-
-    }
-
-    const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error('Error:', error);   
-
-  }
-}
 
 $('#termsCheckId').change(function() {
 	if ($(this).is(':checked')) {
@@ -170,26 +142,19 @@ $('#btn-save-next').click(function() {
 });
 
 function save_company() {
-	const randomNames = [
-		"Empresa Alpha", "Beta Corp", "Gamma Ltda", "Delta Inc", "Epsilon LLC",
-		"Zeta Enterprises", "Eta Solutions", "Theta Services", "Iota Innovations", "Kappa Technologies",
-		"Lambda Systems", "Mu Industries", "Nu Networks", "Xi Dynamics", "Omicron Holdings",
-		"Pi Ventures", "Rho Partners", "Sigma Consulting", "Tau Logistics", "Upsilon Media",
-		"Phi Productions", "Chi Designs", "Psi Marketing", "Omega Group", "Alpha Beta Co.",
-		"Beta Gamma Inc.", "Gamma Delta Ltd.", "Delta Epsilon LLC", "Epsilon Zeta Corp", "Zeta Eta Enterprises"
-	];
-	const name = randomNames[Math.floor(Math.random() * randomNames.length)];
-	const description = "Empresa de teste";
-	const category = "Restaurantes veganos";
-	const street = "Rua das Flores";
-	const number = "123";
-	const complement = "Sala 1";
-	const city = "São Paulo";
-	const state = "SP";
-	const zip = "12345-678";
-	const country = "Brasil";
-	const phone = "11 1234-5678";
-	const website = "www.minhaempresa.com.br";
+	
+	const name = $('#company-name-id').val();
+	const description = $('#company-description-id').val();
+	const category = "Restaurante";
+	const street = $('#company-street-id').val();
+	const number = $('#company-number-id').val();
+	const complement = $('#company-complement-id').val();
+	const city = $('#company-city-id').val();
+	const state = $('#company-state-id').val();
+	const zip = $('#company-zip-id').val();
+	const country = $('#company-country-id').val();
+	const phone = $('#company-phone-id').val();
+	const website = "https://www.example.com";
 
 	fetch('/company-save', {
 		method: 'POST',
@@ -210,9 +175,10 @@ function save_company() {
 
 
 function save_user(CompanyId) {
-	const name= "João da Silva";
-	const password = "12345678";
-	const email = "test" + Math.floor(Math.random() * 1000) + "@example.com";
+
+	const name = $('#company-admin-id').val();
+	const email = $('#company-email-id').val();
+	const password = $('#passwordId').val();
 
 	fetch('/user-save', {
 		method: 'POST',

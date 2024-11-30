@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/heronh/cardapio/initializers"
@@ -36,10 +37,15 @@ func CompanySave(c *gin.Context) {
 }
 
 func Company(c *gin.Context) {
+	now := time.Now()
+	email := "heron" + fmt.Sprint(now.Unix()) + "@gmail.com"
+	name := "Heron" + fmt.Sprint(now.Unix())
 	c.HTML(http.StatusOK, "company.html", gin.H{
 		"Title":          "Empresa",
 		"Heading":        "Empresa!",
 		"Message":        "Cadastro de empresa",
 		"company_active": "h5",
+		"email":          email,
+		"name":           name,
 	})
 }
