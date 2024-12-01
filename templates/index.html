@@ -8,13 +8,21 @@
   {{ template "head" . }}
 </head>
 <body>
-<div class="container m-3">
+  <div class="card m-3">
+    <div class="card-header">
+      <h1>{{ .Title }}</h1>
+    </div>
+    <div class="card-body">
+      <p>Faça um rápido tour antes de começar</p>
 
-  {{ template "navbar" . }}
-  
-  <h1>{{ .message }}</h1>
+      <p>
+        <a href="/company">Cadastre-se</a> ou <a href="/login">entre</a> para começar
+      </p>
+    </div>
+  </div>
 
-  {{ template "footer" . }}
+
+{{ template "footer" . }}
 
 </div>
 

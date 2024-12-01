@@ -4,61 +4,60 @@
 {{ template "head" . }}
 
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h1>Login</h1>
-                    </div>
-                    <div class="card-body">
-                        <form id="login-form">
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email" value="maria@gmail.com">
-                            </div>
-                            <div class="form-group mt-3">
-                                <div class="row">
-                                    <div class="col-1">
-                                        <button type="submit" class="btn" title="Login">
-                                            <i class="bi bi-box-arrow-in-right"></i>
-                                        </button>
-                                    </div>
-                                    <div class="col-11">
-                                        <input type="password" class="form-control" id="password" name="password" value ="maria123456">
-                                    </div>
-                                </div>
-                            </div>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h1>Login</h1>
+					</div>
+					<div class="card-body">
+						<form id="login-form">
+							<div class="form-group">
+								<label for="email">Email:</label>
+								<input type="email" class="form-control" id="email" name="email" value="{{ .email }}">
+							</div>
+							<div class="form-group mt-3">
+								<div class="row">
+									<div class="col-1">
+										<button type="submit" class="btn" title="Login">
+											<i class="bi bi-box-arrow-in-right"></i>
+										</button>
+									</div>
+									<div class="col-11">
+										<input type="password" class="form-control" id="password" name="password">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.getElementById('login-form').addEventListener('submit', function(event) {
+			event.preventDefault();
+			const email = document.getElementById('email').value;
+			const password = document.getElementById('password').value;
 
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);
-                    window.location.href = '/todos';
-                } else if (data.error) {
-                    alert(data.error);
-                }
-            });
-        });
-    </script>
+			fetch('/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ email, password })
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.message) {
+					alert(data.message);
+					window.location.href = '/todos';
+				} else if (data.error) {
+					alert(data.error);
+				}
+			});
+		});
+	</script>
 </body>
 </html>

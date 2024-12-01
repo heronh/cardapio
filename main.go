@@ -40,9 +40,9 @@ func main() {
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
-			"Title":   "Benvindo",
+			"Title":   "Benvindo ao seu próximo cardápio digital!",
 			"Heading": "Página de acesso!",
-			"Message": "",
+			"Message": "Benvindo ao seu próximo cardápio digital!",
 			"welcome": "h5",
 		})
 	})

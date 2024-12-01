@@ -108,11 +108,17 @@ func Logout(c *gin.Context) {
 }
 
 func LoginPage(c *gin.Context) {
+
+	// Parse email from URL
+	email := c.Query("email")
+	fmt.Println("Email: ", email)
+
 	c.HTML(http.StatusOK, "login.html", gin.H{
 		"Title":   "Login",
 		"Heading": "Login!",
 		"Message": "Página de login",
 		"login":   "h5",
+		"email":   email,
 	})
 }
 

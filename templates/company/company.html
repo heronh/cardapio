@@ -22,7 +22,7 @@
 {{ template "company-contact-modal" . }}
 {{ template "company-sumary-modal" . }}
 {{ template "company-save-modal" . }}
-
+{{ template "company-greetings-modal" . }}
 
 </div>
 
@@ -33,8 +33,12 @@
 
 <script>
 $(document).ready(function() {
-	//setTimeout(sendJsonData, 2000);
-	enableSaveButton();
+	console.log('company.html');
+});
+
+$('.go-to-login').click(function() {
+	const email = $('#company-email-id').val();
+	window.location.href = '/login?email=' + email;
 });
 
 $('#termsCheckId').change(function() {
@@ -172,7 +176,6 @@ function save_company() {
 		}
 	});
 }
-
 
 function save_user(CompanyId) {
 

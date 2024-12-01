@@ -1,6 +1,6 @@
 {{define "company-greetings-modal"}}
 <div class="row d-flex justify-content-center">
-	<div class="modal modal-xl fade" id="company-greetings-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal modal-xl fade" id="company-greetings-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 
@@ -16,21 +16,22 @@
 				</div>
 
 				<div class="modal-body">
-					<p>Vá para a página de administração do seu cardápio.</p>
-                    <p>Lá você poderá:</p>
-                    <ul>
-                        <li>Adicionar, editar e remover produtos.</li>
-                        <li>Adicionar, editar e remover categorias.</li>
-                        <li>Adicionar, editar e remover promoções.</li>
-                        <li>Adicionar, editar e remover combos.</li>
-                        <li>Adicionar, editar e remover opções de promoções.</li>
-                        <li>Criar ou desabilitar usuários</li>
-                        <li>Gerar um qrcode para seus clientes</li>
-                    </ul>
+					<p class="text-success">
+						<button class="btn btn-link go-to-login">Entre a Vá para a página de administração do seu cardápio.</button></p>
+					<p>Lá você poderá:</p>
+					<ul>
+						<li>Adicionar, editar e remover produtos.</li>
+						<li>Adicionar, editar e remover categorias.</li>
+						<li>Adicionar, editar e remover promoções.</li>
+						<li>Adicionar, editar e remover combos.</li>
+						<li>Adicionar, editar e remover opções de promoções.</li>
+						<li>Criar ou desabilitar usuários</li>
+						<li>Gerar um qrcode para seus clientes</li>
+					</ul>
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" id="btn-greetings-next" class="btn btn-outline-danger disabled">Iniciar</button>
+					<button type="button" class="btn btn-outline-success go-to-login">Iniciar</button>
 				</div>
 			</div>
 		</div>
