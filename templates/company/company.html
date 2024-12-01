@@ -87,6 +87,7 @@ function enableSaveButton() {
 }
 
 $('#btn-name-next').click(function() {
+	console.log('btn-name-next');
 	if ( $('#company-name-id').val() == '' ) {
 		alert('O nome da empresa é obrigatório.');
 		$('#company-name-id').removeClass('border border-success').addClass('border border-danger');
@@ -98,6 +99,7 @@ $('#btn-name-next').click(function() {
 });
 
 $('#btn-address-previous').click(function() {
+	console.log('btn-address-previous');
 	if ( $('#company-city-id').val() == '' ) {
 		alert('A cidade é obrigatória.');
 		$('#company-city-id').removeClass('border border-success').addClass('border border-danger');
@@ -110,38 +112,43 @@ $('#btn-address-previous').click(function() {
 });
 
 $('#btn-address-next').click(function() {
+	console.log('btn-address-next');
 	$('#company-address-modal').modal('hide');
 	$('#company-contact-modal').modal('show');
 });
 
 $('#btn-contact-previous').click(function() {
+	console.log('btn-contact-previous');
 	$('#company-contact-modal').modal('hide');
 	$('#company-address-modal').modal('show');
 });
 
 $('#btn-contact-next').click(function() {
-	$('#company-contact-modal').modal('hide');
-	$('#company-sumary-modal').modal('show');
+	console.log('btn-contact-next');
 	fillSumary();
-	checkSumary();
+	check_if_email_exists();
 });
 
 $('#btn-sumary-previous').click(function() {
+	console.log('btn-sumary-previous');
 	$('#company-sumary-modal').modal('hide');
 	$('#company-contact-modal').modal('show');
 });
 
 $('#btn-sumary-next').click(function() {
+	console.log('btn-sumary-next');
 	$('#company-sumary-modal').modal('hide');
 	$('#company-save-modal').modal('show');
 });
 
 $('#btn-save-previous').click(function() {
+	console.log('btn-save-previous');
 	$('#company-save-modal').modal('hide');
 	$('#company-sumary-modal').modal('show');
 });
 
 $('#btn-save-next').click(function() {
+	console.log('btn-save-next');
 	save_company();
 });
 
@@ -171,6 +178,8 @@ function save_company() {
 	.then(data => {
 		if (data.message) {
 			save_user(data.CompanyId);
+			$('#company-save-modal').modal('hide');
+			$('#company-greetings-modal').modal('show');
 		} else if (data.error) {
 			alert(data.error);
 		}
@@ -200,10 +209,9 @@ function save_user(CompanyId) {
 	});
 }
 	
-function checkSumary() {
+function check_if_email_exists() {
 
 	var email = $('#company-email-id').val();
-
 	$.ajax({
 		url: '/company-check-email',
 		type: 'POST',
@@ -211,14 +219,12 @@ function checkSumary() {
 		success: function(response) {
 			alert('O email já está em uso.\nCadastre outro email.');
 			$('#company-email-id').removeClass('border border-success').addClass('border border-danger');
-			$('#company-sumary-modal').modal('hide');
-			$('#company-contact-modal').modal('show');
 		},
 		error: function() {
 			$('#btn-sumary-next').removeClass('disabled');
 			$('#btn-sumary-next').removeClass('btn btn-outline-danger disabled').addClass('btn btn-outline-success');
-			$('#company-sumary-modal').modal('hide');
-			$('#company-save-modal').modal('show');
+			$('#company-contact-modal').modal('hide');
+			$('#company-sumary-modal').modal('show');
 		}
 	});
 }
