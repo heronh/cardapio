@@ -51,6 +51,8 @@ func main() {
 		c.HTML(http.StatusOK, "welcome.html", nil)
 	})
 
+	r.GET("/admin", authMiddleware(), controllers.Admin)
+
 	r.POST("/login", controllers.Login)
 	r.GET("/logout", controllers.Logout)
 	r.GET("register", controllers.Register)
@@ -83,7 +85,7 @@ func authMiddleware() gin.HandlerFunc {
 		cookie, err := c.Request.Cookie("token")
 		if err != nil {
 			if err == http.ErrNoCookie {
-				c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+				redirectUnauthorized(c)
 				c.Abort()
 				return
 			}
@@ -141,4 +143,9 @@ func loadTemplates(root string) (files []string, err error) {
 		return err
 	})
 	return files, err
+}
+
+func redirectUnauthorized(c *gin.Context) {
+	c.Redirect(http.StatusFound, "/login?error=unauthorized")
+	c.Abort()
 }
