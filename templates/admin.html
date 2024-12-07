@@ -14,6 +14,47 @@
     </div>
 </div>
 
+<div class="card">
+    <div class="card-header">
+        <h5>Seus pratos</h5>
+    </div>
+    <div class="card-body">
+
+        {{ if not .Dishes }}
+        <div class="alert alert-warning" role="alert">
+            <p>Você ainda não cadastrou nenhum prato.</p>
+            <p>Gostaria que criassemos alguns pratos para você como exemplo?</p>
+            <button id="btn-create-dishes" class="btn btn-link">Criar pratos</button>
+        </div>
+
+        {{ end }}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome do Prato</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Preço</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .Dishes }}
+                <tr>
+                    <th scope="row">{{ .ID }}</th>
+                    <td>{{ .Name }}</td>
+                    <td>{{ .Description }}</td>
+                    <td>{{ .Price }}</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<input id="current-user-id" value="{{ .UserId }}" hidden />
+<input id="current-company-id" value="{{ .CompanyId }}" hidden />
+
 {{ template "footer" . }}
 
 </div>
@@ -23,5 +64,42 @@
     //$('#description').focus();
     //$('html, body').animate({ scrollTop: 0 }, 'fast');
   });
+
+  $('#btn-create-dishes').click(function() {
+
+    const CompanyId = $('#current-company-id').val();
+    const UserId = $('#current-user-id').val();
+    fetch('/create-dishes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+            body: JSON.stringify({CompanyId:parseInt(CompanyId), UserId:parseInt(UserId)})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                showAlert(data.message, 5000);
+            } else if (data.error) {
+                alert(data.error);
+            }
+        });
+    });
+
+    function showAlert(message, duration) {
+        // Create a new div element for the alert
+        const alertDiv = document.createElement('div');
+        alertDiv.classList.add('alert', 'alert-info'); // Add CSS classes for styling
+        alertDiv.textContent = message;
+
+        // Append the alert to the body
+        document.body.appendChild(alertDiv);
+
+        // Remove the alert after the specified duration
+        setTimeout(() => {
+            alertDiv.remove();
+            window.location.href = '/admin';
+        }, duration);
+    }
 
 </script>

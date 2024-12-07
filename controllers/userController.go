@@ -18,8 +18,9 @@ type Credentials struct {
 }
 
 type Claims struct {
-	Email string `json:"email"`
-	Id    uint   `json:"id"`
+	Email     string `json:"email"`
+	Id        uint   `json:"id"`
+	CompanyId uint   `json:"company_id"`
 	jwt.RegisteredClaims
 }
 
@@ -146,11 +147,15 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não cadastrado"})
 		return
 	}
-
-	expirationTime := time.Now().Add(50 * time.Minute)
+	fmt.Println("User: ", user)
+	fmt.Println("Company: ", user.Company)
+	fmt.Println("Company ID: ", user.CompanyId)
+	expirationTime := time.Now().Add(120 * time.Minute)
 	claims := &Claims{
-		Email: creds.Email,
-		Id:    user.ID,
+		Email:     creds.Email,
+		Id:        user.ID,
+		CompanyId: user.CompanyId,
+
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
@@ -180,4 +185,54 @@ func CheckEmail(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Usuário encontrado", "user": user})
+}
+
+func AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		cookie, err := c.Request.Cookie("token")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				redirectUnauthorized(c)
+				c.Abort()
+				return
+			}
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+			c.Abort()
+			return
+		}
+
+		tokenStr := cookie.Value
+		claims := &Claims{}
+
+		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+			return JwtKey, nil
+		})
+
+		if err != nil {
+			if err == jwt.ErrSignatureInvalid {
+				c.Redirect(http.StatusFound, "/login?error=unauthorized")
+				c.Abort()
+				return
+			}
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+			c.Abort()
+			return
+		}
+
+		if !token.Valid {
+			c.Redirect(http.StatusFound, "/login?error=unauthorized")
+			c.Abort()
+			return
+		}
+
+		c.Set("email", claims.Email)
+		c.Set("ID", claims.Id)
+		c.Set("CompanyId", claims.CompanyId)
+		c.Next()
+	}
+}
+
+func redirectUnauthorized(c *gin.Context) {
+	c.Redirect(http.StatusFound, "/login?error=unauthorized")
+	c.Abort()
 }

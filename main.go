@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 
 	"github.com/heronh/cardapio/controllers"
 	"github.com/heronh/cardapio/initializers"
@@ -51,7 +50,8 @@ func main() {
 		c.HTML(http.StatusOK, "welcome.html", nil)
 	})
 
-	r.GET("/admin", authMiddleware(), controllers.Admin)
+	r.GET("/admin", controllers.AuthMiddleware(), controllers.Admin)
+	r.POST("/create-dishes", controllers.CreateDishes)
 
 	r.POST("/login", controllers.Login)
 	r.GET("/logout", controllers.Logout)
@@ -66,7 +66,7 @@ func main() {
 	r.POST("/company-save", controllers.CompanySave)
 
 	// Funções relativas as tarefas
-	r.GET("/todos", authMiddleware(), controllers.GetTodos)
+	r.GET("/todos", controllers.AuthMiddleware(), controllers.GetTodos)
 	r.POST("/todos", controllers.SaveTodo)
 	r.POST("/todos_delete", controllers.DeleteTodo)
 	r.POST("/todos_check", controllers.CheckTodo)
@@ -78,50 +78,6 @@ func main() {
 		port = "8080" // default port if not specified
 	}
 	r.Run(":" + port)
-}
-
-func authMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		cookie, err := c.Request.Cookie("token")
-		if err != nil {
-			if err == http.ErrNoCookie {
-				redirectUnauthorized(c)
-				c.Abort()
-				return
-			}
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
-			c.Abort()
-			return
-		}
-
-		tokenStr := cookie.Value
-		claims := &controllers.Claims{}
-
-		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-			return controllers.JwtKey, nil
-		})
-
-		if err != nil {
-			if err == jwt.ErrSignatureInvalid {
-				c.Redirect(http.StatusFound, "/login?error=unauthorized")
-				c.Abort()
-				return
-			}
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
-			c.Abort()
-			return
-		}
-
-		if !token.Valid {
-			c.Redirect(http.StatusFound, "/login?error=unauthorized")
-			c.Abort()
-			return
-		}
-
-		c.Set("email", claims.Email)
-		c.Set("ID", claims.Id)
-		c.Next()
-	}
 }
 
 func loadTemplates(root string) (files []string, err error) {
@@ -143,9 +99,4 @@ func loadTemplates(root string) (files []string, err error) {
 		return err
 	})
 	return files, err
-}
-
-func redirectUnauthorized(c *gin.Context) {
-	c.Redirect(http.StatusFound, "/login?error=unauthorized")
-	c.Abort()
 }
