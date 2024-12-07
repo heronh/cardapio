@@ -66,17 +66,36 @@ func CreateDishes(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Pratos criados"})
+}
 
-	// cria os pratos desta empresa
-	// for _, dish := range dishes {
-	// 	dish.UserID = 1
-	// 	dish.CreatedAt = time.Time{}
-	// 	dish.UpdatedAt = time.Time{}
-	// 	dish.CompanyID = CompanyId.(uint)
-	// 	if err := initializers.DB.Create(&dish).Error; err != nil {
-	// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-	// 		return
-	// 	}
-	// }
+func CheckUncheckDish(c *gin.Context) {
+	fmt.Println("\nCheckUncheckDish")
 
+	type RequestData struct {
+		DishID  uint `json:"DishID"`
+		UserID  uint `json:"UserID"`
+		Enabled bool `json:"Enabled"`
+	}
+	var requestData RequestData
+	if err := c.BindJSON(&requestData); err != nil {
+		c.JSON(http.StatusOK, gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println("RequestData: ", requestData)
+
+	var dish models.Dish
+	dish.UserID = requestData.UserID
+	dish.UpdatedAt = time.Time{}
+	if err := initializers.DB.First(&dish, requestData.DishID).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	dish.Enabled = !dish.Enabled
+	if err := initializers.DB.Save(&dish).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Prato atualizado"})
 }

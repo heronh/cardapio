@@ -9,30 +9,30 @@
 {{ template "navbar" . }}
 
 <div class="card">
-    <div class="card-header">
-        <h5>Seus pratos</h5>
-    </div>
-    <div class="card-body">
+	<div class="card-header">
+		<h5>Seus pratos</h5>
+	</div>
+	<div class="card-body">
 
-        {{ if not .Dishes }}
-        <div class="alert alert-warning" role="alert">
-            <p>Você ainda não cadastrou nenhum prato.</p>
-            <p>Gostaria que criassemos alguns pratos para você como exemplo?</p>
-            <button id="btn-create-dishes" class="btn btn-link">Criar pratos</button>
-        </div>
-        {{ else}}
+		{{ if not .Dishes }}
+		<div class="alert alert-warning" role="alert">
+			<p>Você ainda não cadastrou nenhum prato.</p>
+			<p>Gostaria que criassemos alguns pratos para você como exemplo?</p>
+			<button id="btn-create-dishes" class="btn btn-link">Criar pratos</button>
+		</div>
+		{{ else}}
 
-        <ul class="list-group">
-            {{ range .Dishes }}
-                {{ template "admin-list-dish" . }}
-            {{ end }}
-            <li class="list-group-item">
-                <button class="btn btn-primary" id="btn-create-dishes">Criar pratos</button>
-            </li>
-        </ul>
-        {{ end }}
+		<ul class="list-group">
+			{{ range .Dishes }}
+				{{ template "admin-list-dish" . }}
+			{{ end }}
+			<li class="list-group-item">
+				<button class="btn btn-primary" id="btn-add-dish">Criar pratos</button>
+			</li>
+		</ul>
+		{{ end }}
 
-    </div>
+	</div>
 </div>
 
 <input id="current-user-id" value="{{ .UserId }}" hidden />
@@ -43,46 +43,90 @@
 </div>
 
 <script>
-  $(document).ready(function() {
-    //$('#description').focus();
-    //$('html, body').animate({ scrollTop: 0 }, 'fast');
-  });
+  	$(document).ready(function() {
+		//$('#description').focus();
+		//$('html, body').animate({ scrollTop: 0 }, 'fast');
+  	});
 
-  $('#btn-create-dishes').click(function() {
+	$('.btn-check-dish').click(function() {
+		const DishId = $(this).closest('li').find('.dish-id').text();
+		check_uncheck_dish(DishId, true);
 
-    const CompanyId = $('#current-company-id').val();
-    const UserId = $('#current-user-id').val();
-    fetch('/create-dishes', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-            body: JSON.stringify({CompanyId:parseInt(CompanyId), UserId:parseInt(UserId)})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                showAlert(data.message, 5000);
-            } else if (data.error) {
-                alert(data.error);
-            }
-        });
-    });
+		// Troca icone do botão
+		$(this).addClass('disabled');
+		$(this).find('i').removeClass('bi-square').addClass('bi-check-square');
+	});
 
-    function showAlert(message, duration) {
-        // Create a new div element for the alert
-        const alertDiv = document.createElement('div');
-        alertDiv.classList.add('alert', 'alert-info'); // Add CSS classes for styling
-        alertDiv.textContent = message;
+	$('.btn-uncheck-dish').click(function() {
+		const DishId = $(this).closest('li').find('.dish-id').text();
+		check_uncheck_dish(DishId, false);
 
-        // Append the alert to the body
-        document.body.appendChild(alertDiv);
+		// Troca icone do botão
+		$(this).addClass('disabled');
+		$(this).find('i').removeClass('bi-check-square').addClass('bi-square');
+	});
 
-        // Remove the alert after the specified duration
-        setTimeout(() => {
-            alertDiv.remove();
-            window.location.href = '/admin';
-        }, duration);
-    }
+	function check_uncheck_dish(DishId, Enabled) {
+
+		const UserId = $('#current-user-id').val();
+
+		// Troca o ícone do botão
+		const btn = Enabled ? 'btn-uncheck-dish' : 'btn-check-dish';
+		const icon = Enabled ? 'bi-check-square' : 'bi-square';
+		$(this).removeClass(btn).addClass(Enabled ? 'btn-check-dish' : 'btn-uncheck-dish');
+		$(this).find('i').removeClass(icon).addClass(Enabled ? 'bi-check-square' : 'bi-square');
+
+		fetch('/admin/check-uncheck-dish', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({UserId:parseInt(UserId), DishId:parseInt(DishId), Enabled:Enabled})
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.message) {
+				showAlert(data.message,2000);
+			} else if (data.error) {
+				alert(data.error);
+			}
+		});
+	}
+
+	$('#btn-create-dishes').click(function() {
+		const CompanyId = $('#current-company-id').val();
+		const UserId = $('#current-user-id').val();
+		fetch('/create-dishes', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({CompanyId:parseInt(CompanyId), UserId:parseInt(UserId)})
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.message) {
+				showAlert(data.message, 5000);
+			} else if (data.error) {
+				alert(data.error);
+			}
+		});
+});
+
+	function showAlert(message, duration) {
+		// Create a new div element for the alert
+		const alertDiv = document.createElement('div');
+		alertDiv.classList.add('alert', 'alert-info'); // Add CSS classes for styling
+		alertDiv.textContent = message;
+
+		// Append the alert to the body
+		document.body.appendChild(alertDiv);
+
+		// Remove the alert after the specified duration
+		setTimeout(() => {
+			alertDiv.remove();
+			window.location.href = '/admin';
+		}, duration);
+	}
 
 </script>
