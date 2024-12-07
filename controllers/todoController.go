@@ -101,7 +101,7 @@ func SaveTodo(c *gin.Context) {
 func GetTodos(c *gin.Context) {
 
 	var todos []models.Todo
-	if err := initializers.DB.Order("completed, updated_at asc").Find(&todos).Error; err != nil {
+	if err := initializers.DB.Order("completed, updated_at desc").Find(&todos).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve todos"})
 		return
 	}

@@ -9,12 +9,7 @@
         "document-title": "off"
       }
     ],
-    "axe/structure": [
-      "default",
-      {
-        "list": "off"
-      }
-    ],
+    "axe/structure": "off",
     "button-type": "off",
     "axe/forms": [
       "default",

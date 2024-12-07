@@ -6,13 +6,7 @@
 <body>
 <div class="container m-3">
 
-  {{ template "navbar" . }}
-  
-<div class="card">
-    <div class="card-header">
-        Benvindo ao Admin:
-    </div>
-</div>
+{{ template "navbar" . }}
 
 <div class="card">
     <div class="card-header">
@@ -26,29 +20,18 @@
             <p>Gostaria que criassemos alguns pratos para você como exemplo?</p>
             <button id="btn-create-dishes" class="btn btn-link">Criar pratos</button>
         </div>
+        {{ else}}
 
+        <ul class="list-group">
+            {{ range .Dishes }}
+                {{ template "admin-list-dish" . }}
+            {{ end }}
+            <li class="list-group-item">
+                <button class="btn btn-primary" id="btn-create-dishes">Criar pratos</button>
+            </li>
+        </ul>
         {{ end }}
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nome do Prato</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Preço</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{ range .Dishes }}
-                <tr>
-                    <th scope="row">{{ .ID }}</th>
-                    <td>{{ .Name }}</td>
-                    <td>{{ .Description }}</td>
-                    <td>{{ .Price }}</td>
-                </tr>
-                {{ end }}
-            </tbody>
-        </table>
     </div>
 </div>
 

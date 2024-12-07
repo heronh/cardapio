@@ -1,0 +1,23 @@
+{{define "admin-list-dish"}}
+<li class="list-group-item">
+    <span class="dish-id" hidden>{{ .ID }}</span>
+    <button class="btn btn-delete-dish" title="delete">
+        <i class="bi bi-x"></i>
+    </button>
+    <button class="btn btn-edit-dish" title="edit">
+        <i class="bi bi-pencil"></i>
+    </button>
+
+    {{ if .Enabled }}
+    <button class="btn btn-disable-dish" title="enable">
+        <i class="bi bi-check-square"></i>
+    </button>
+    {{ else }}
+    <button class="btn btn-enable-dish" title="enable">
+        <i class="bi bi-square"></i>
+    </button>
+    {{ end }}
+
+    <span>{{ .Name }}</span>
+</li>
+{{end}}
