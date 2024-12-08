@@ -34,6 +34,7 @@
 	</div>
 </div>
 
+{{ template "admin-new-dish" . }}
 <input id="current-user-id" value="{{ .UserId }}" hidden />
 <input id="current-company-id" value="{{ .CompanyId }}" hidden />
 
@@ -46,6 +47,10 @@
 		//$('#description').focus();
 		//$('html, body').animate({ scrollTop: 0 }, 'fast');
   	});
+
+	$('#btn-add-dish').click(function() {
+		$('#modal-new-dish').modal('show');
+	});
 
 	$('.btn-check-dish').click(function() {
 		const DishId = $(this).closest('li').find('.dish-id').text();
