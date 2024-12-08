@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head>
+  {{ template "head" . }}
+</head>
+<body>
+<div class="container m-1">
+
+  	{{ template "navbar" . }}
+  
+	<div class="card mt-4">
+		<div class="card-header">
+			Carrege suas imagens
+		</div>
+		<div class="card-body">
+			<form action="/images/upload" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="images">Escolha uma ou mais imagens</label>
+					<input type="file" class="form-control-file" id="images" name="images[]" multiple>
+				</div>
+				<button type="submit" class="btn btn-primary mt-2">Carregar</button>
+				<input id="UserId" name="UserId" type="number" value="{{ .UserId }}" hidden/>
+				<input id="CompanyId" name="CompanyId" type="number" value="{{ .CompanyId }}" hidden/>
+			</form>
+		</div>
+	</div>
+	
+  	{{ template "footer" . }}
+
+</div>
+
+</body>
+</html>

@@ -6,16 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type Weekday struct {
-	Monday    bool `json:"monday"`
-	Tuesday   bool `json:"tuesday"`
-	Wednesday bool `json:"wednesday"`
-	Thursday  bool `json:"thursday"`
-	Friday    bool `json:"friday"`
-	Saturday  bool `json:"saturday"`
-	Sunday    bool `json:"sunday"`
-}
-
 type Dish struct {
 	gorm.Model
 	ID            uint      `json:"id" gorm:"primary_key"`

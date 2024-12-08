@@ -50,6 +50,9 @@ func main() {
 		c.HTML(http.StatusOK, "welcome.html", nil)
 	})
 
+	r.GET("/images", controllers.AuthMiddleware(), controllers.Images)
+	r.POST("/images/upload", controllers.Upload)
+
 	r.GET("/admin", controllers.AuthMiddleware(), controllers.Admin)
 	r.POST("/create-dishes", controllers.CreateDishes)
 	r.POST("/admin/check-uncheck-dish", controllers.CheckUncheckDish)
