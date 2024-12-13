@@ -17,7 +17,8 @@
 		<div class="alert alert-warning" role="alert">
 			<p>Você ainda não cadastrou nenhum prato.</p>
 			<p>Gostaria que criassemos alguns pratos para você como exemplo?</p>
-			<button id="btn-create-dishes" class="btn btn-link">Criar pratos</button>
+			<button id="btn-create-dishes" class="btn btn-link">Criar um cardápio de exemplo</button>
+			<button class="btn btn-link btn-add-dish">Adicionar um prato</button>
 		</div>
 		{{ else}}
 
@@ -26,7 +27,7 @@
 				{{ template "admin-list-dish" . }}
 			{{ end }}
 			<li class="list-group-item">
-				<button class="btn btn-primary" id="btn-add-dish">Criar pratos</button>
+				<button class="btn btn-primary btn-add-dish">Criar pratos</button>
 			</li>
 		</ul>
 		{{ end }}
@@ -68,7 +69,8 @@
 			}
 		});
 	});
-	$('#btn-add-dish').click(function() {
+	
+	$('.btn-add-dish').click(function() {
 		$('#modal-new-dish').modal('show');
 	});
 
