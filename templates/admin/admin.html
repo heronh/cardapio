@@ -48,6 +48,26 @@
 		//$('html, body').animate({ scrollTop: 0 }, 'fast');
   	});
 
+	$('.btn-delete-dish').click(function() {
+		console.log('delete');
+		const DishId = $(this).closest('li').find('.dish-id').text();
+		const UserId = $('#current-user-id').val();
+		fetch('/admin/delete-dish', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({UserId:parseInt(UserId), DishId:parseInt(DishId)})
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.message) {
+				showAlert(data.message, 2000);
+			} else if (data.error) {
+				alert(data.error);
+			}
+		});
+	});
 	$('#btn-add-dish').click(function() {
 		$('#modal-new-dish').modal('show');
 	});
