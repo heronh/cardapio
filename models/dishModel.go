@@ -23,4 +23,5 @@ type Dish struct {
 	DaysOfWeek    []int     `gorm:"type:int[]"` // 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
 	AvailableFrom time.Time `json:"availablefrom"`
 	AvailableTo   time.Time `json:"availableto"`
+	Images        []Image   `gorm:"many2many:dish_images;"` // many to many relationship
 }

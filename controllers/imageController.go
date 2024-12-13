@@ -58,7 +58,6 @@ func Upload(c *gin.Context) {
 		CompanyID: uint(CompanyId),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-		IsSample:  false,
 	}
 
 	// Multipart form

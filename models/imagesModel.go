@@ -12,6 +12,7 @@ type Image struct {
 	User      User      `gorm:"foreignKey:UserID"`
 	CompanyID uint      `json:"companyid"`
 	Company   Company   `gorm:"foreignKey:CompanyID"`
-	Name      string    `gorm:"type:varchar(255)"` // Original name of the image
-	IsSample  bool      `gorm:"type:boolean"`      // If the image is a sample
+	Name      string    `gorm:"type:varchar(255)"`
+	KeyWords  string    `gorm:"type:varchar(255)"`
+	Path      string    `gorm:"type:varchar(255)"`
 }
