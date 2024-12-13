@@ -13,6 +13,5 @@ type Image struct {
 	CompanyID uint      `json:"companyid"`
 	Company   Company   `gorm:"foreignKey:CompanyID"`
 	Name      string    `gorm:"type:varchar(255)"`
-	KeyWords  string    `gorm:"type:varchar(255)"`
 	Path      string    `gorm:"type:varchar(255)"`
 }

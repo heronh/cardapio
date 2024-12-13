@@ -18,6 +18,7 @@ func init() {
 	initializers.LoadEnv()
 	initializers.ConnectToDb()
 	initializers.SyncDatabase()
+	initializers.Seeder()
 }
 
 func main() {
