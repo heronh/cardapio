@@ -9,4 +9,5 @@ func SyncDatabase() {
 	DB.AutoMigrate(&models.Company{})
 	DB.AutoMigrate(&models.Dish{})
 	DB.AutoMigrate(&models.Image{})
+	DB.AutoMigrate(&models.Category{})
 }

@@ -58,6 +58,7 @@ func main() {
 	r.POST("/create-dishes", controllers.CreateDishes)
 	r.POST("/admin/check-uncheck-dish", controllers.CheckUncheckDish)
 	r.POST("/admin/delete-dish", controllers.DeleteDish)
+	r.GET("/dish", controllers.AuthMiddleware(), controllers.NewDish)
 
 	r.POST("/login", controllers.Login)
 	r.GET("/logout", controllers.Logout)

@@ -85,5 +85,5 @@ func Upload(c *gin.Context) {
 		}
 	}
 
-	c.Redirect(http.StatusFound, "/images")
+	c.Redirect(http.StatusFound, c.Request.Referer())
 }

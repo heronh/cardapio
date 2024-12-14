@@ -11,7 +11,8 @@ import (
 func Seeder() {
 
 	// check if users table is empty, if not, return
-	if DB.First(&models.User{}) == nil {
+	var count int64
+	if DB.Model(&models.User{}).Count(&count); count != 0 {
 		fmt.Println("Usuários já criados")
 		return
 	}

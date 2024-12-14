@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+
+{{ template "head" . }}
+
+<body>
+
+{{ template "navbar" . }}
+
+<div class="container">
+{{ template "modal-new-dish-images" . }}
+</div>
+
+<input type="number" id="current-user-id" value="{{ .UserId }}" hidden />
+<input type="number" id="current-company-id" value="{{ .CompanyId }}" hidden />
+
+{{ template "footer" . }}
+
+<script>
+  	$(document).ready(function() {
+		$('#modal-new-dish-images').modal('show');
+  	});
+
+	
+
+	function showAlert(message, duration) {
+		// Create a new div element for the alert
+		const alertDiv = document.createElement('div');
+		alertDiv.classList.add('alert', 'alert-info'); // Add CSS classes for styling
+		alertDiv.textContent = message;
+
+		// Append the alert to the body
+		document.body.appendChild(alertDiv);
+
+		// Remove the alert after the specified duration
+		setTimeout(() => {
+			alertDiv.remove();
+			//window.location.href = '/dish';
+		}, duration);
+	}
+
+</script>
