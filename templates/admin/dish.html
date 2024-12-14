@@ -10,6 +10,7 @@
 <div class="container">
 {{ template "modal-new-dish-images" . }}
 {{ template "modal-pick-dish-images" . }}
+{{ template "modal-new-category" . }}
 </div>
 
 <input type="number" id="current-user-id" value="{{ .UserId }}" hidden />
@@ -19,24 +20,95 @@
 
 <script>
   	$(document).ready(function() {
-		$('#modal-pick-dish-images').modal('show');
+		$('#modal-new-category').modal('show');
+		populateCategories();
   	});
 
+	// Populate categories
+	function populateCategories() {
+
+		const CompanyId = $('#current-company-id').val();
+		fetch('/api/get/categories', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ CompanyId:parseInt(CompanyId)})
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.error) {
+				console.log('Error:', data);
+				showAlert(data.error, 3000);
+			} 
+			else {
+				const categoryList = $('#category-list');
+				categoryList.empty();
+				data.categories.forEach(category => {
+					categoryList.append(`<div class="form-check col">
+						<input class="form-check-input" type="radio" name="categoryRadio">
+						<label class="form-check">${category.Name}</label>`);
+					categoryList.append(`</div>`);
+				});
+			}
+		})
+	}
+
+	// Evento quando pressionado ENTER em category name
+	$('#category-name').keydown(function(e) {
+		console.log('category-name keypress');
+		if (e.which == 13) {
+			$('.btn-create-category').click();
+		}
+	});
+
+	// Cria novas categorias
+	$('.btn-create-category').click(function() {
+		console.log('btn-create-category clicked');
+		const Name = $('#category-name').val();
+		const CompanyId = $('#current-company-id').val();
+		const UserId = $('#current-user-id').val();
+
+		if (!Name) {
+			showAlert('Nome da categoria não pode ser vazio!', 3000);
+			return;
+		}
+
+		console.log('Category:', Name);
+		fetch('/api/create/category', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ Name, CompanyId:parseInt(CompanyId), UserId:parseInt(UserId) })
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.error) {
+				console.log('Error:', data);
+				showAlert(data.error, 3000);
+			} 
+			else {
+				console.log('Success:', data);
+				const categoryList = $('#category-list');
+				categoryList.append(`<div class="form-check col">
+					<input class="form-check-input" type="radio" name="categoryRadio">
+					<label class="form-check">${data.category}</label></div>`);
+
+				console.log('Success:', data.message);
+				showAlert(data.message, 3000);
+			}
+		})
+	
+		$('#category-name').val('');
+	});
 
 	function showAlert(message, duration) {
-		// Create a new div element for the alert
-		const alertDiv = document.createElement('div');
-		alertDiv.classList.add('alert', 'alert-info'); // Add CSS classes for styling
-		alertDiv.textContent = message;
-
-		// Append the alert to the body
-		document.body.appendChild(alertDiv);
-
-		// Remove the alert after the specified duration
-		setTimeout(() => {
-			alertDiv.remove();
-			//window.location.href = '/dish';
-		}, duration);
+		$('#span-category-success').text(message);
+		$('#div-category-success').removeAttr('hidden');
+		setTimeout(function() {
+			$('#div-category-success').attr('hidden', true).fadeOut();
+		}, duration);	
 	}
 
 </script>

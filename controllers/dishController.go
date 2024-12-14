@@ -26,6 +26,13 @@ func NewDish(c *gin.Context) {
 		return
 	}
 
+	// Carrega as categorias desta empresa
+	var categories []models.Category
+	if err := initializers.DB.Where("company_id = ?", CompanyId).Find(&categories).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	// Copia cada um dos nomes retirando a extensão para uma nova variável
 	var imageNames string
 	for i, image := range images {
@@ -44,6 +51,7 @@ func NewDish(c *gin.Context) {
 		"UserId":     UserId,
 		"Images":     images,
 		"ImageNames": imageNames,
+		"Categories": categories,
 	})
 }
 

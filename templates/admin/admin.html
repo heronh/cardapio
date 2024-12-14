@@ -132,17 +132,14 @@
 
 	function showAlert(message, duration) {
 		// Create a new div element for the alert
-		const alertDiv = document.createElement('div');
+		const alertDiv = document.getElementById('div-alert');
+		alertDiv.hidden = false;
 		alertDiv.classList.add('alert', 'alert-info'); // Add CSS classes for styling
 		alertDiv.textContent = message;
 
-		// Append the alert to the body
-		document.body.appendChild(alertDiv);
-
 		// Remove the alert after the specified duration
 		setTimeout(() => {
-			alertDiv.remove();
-			window.location.href = '/admin';
+			alertDiv.hidden = true;
 		}, duration);
 	}
 

@@ -1,75 +1,37 @@
-{{ define "admin-new-category" }}
+{{ define "modal-new-category" }}
 
-<div class="modal fade" id="modal-new-dish" tabindex="-1" aria-labelledby="modal-new-dish" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="modal-new-category" tabindex="-1" aria-labelledby="modal-new-category" aria-hidden="true">
+	<div class="modal-dialog modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modal-new-dish">Novo Prato</h5>
+				<h5 class="modal-title" id="modal-new-category">3 - Seção</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<div class="mb-3">
-					<label for="dish-name" class="form-label">Nome</label>
-					<input type="text" class="form-control" id="dish-name" name="Name" value="Feijoada" required>
+					<h6>Você deve escolher uma seção onde o prato será exibido. Caso ainda não exista a seção desejada, basta criar.</h6>
 				</div>
-				<div class="mb-3">
-					<label for="dish-price" class="form-label">Preço</label>
-					<input type="number" class="form-control" id="dish-price" name="Price" value="25.00" required>
+				<div class="input-group mb-3">
+					<button class="btn btn-outline-secondary btn-create-category" type="button">Salvar</button>
+					<input type="text" class="form-control" id="category-name" placeholder="Entradas, sobremesas, etc">
 				</div>
-				<div class="mb-3">
-					<label for="dish-description" class="form-label">Descrição</label>
-					<textarea class="form-control" id="dish-description" name="Description" rows="3">Feijoada completa com bisteca e ovo frito separados</textarea>
-				</div>					
-				<div class="mb-3">
-					<label for="category" class="form-label">Crie uma categoria</label>
-					<input type="text" class="form-control" id="category" name="Category" value="Prato principal"/>
+
+				<div id="category-list" class="row">
 				</div>
-				{{ if .Categories }}
-				<div class="mb-3">
-					<label for="dish-category" class="form-label">ou escolha uma Categoria existente</label>
-					<select class="form-select" id="dish-category" name="Category-selected" required>
-					</select>
+
+				<div id="div-category-danger" class="alert alert-danger" role="alert" hidden>
+					<span id="span-category-danger"></span>
 				</div>
-				{{ end }}
-				<div class="mb-3">
-					<label for="dish-image" class="form-label">Imagem</label>
-					<input type="file" class="form-control" id="dish-image" name="Image" accept="image/*">
+				<div id="div-category-success" class="alert alert-success" role="alert" hidden>
+					<span id="span-category-success"></span>
 				</div>
-				<div class="mb-3">
-					<label for="days-of-week" class="form-label">Dias da Semana</label>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="monday-switch" unchecked>
-						<label class="form-check-label" for="flexSwitchCheckChecked">Segunda-feira</label>
-					</div>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="tuesday-switch" unchecked>
-						<label class="form-check-label" for="flexSwitchCheckChecked">Terça-feira</label>
-					</div>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="wednesday-switch" checked>
-						<label class="form-check-label" for="flexSwitchCheckChecked">Quarta-feira</label>
-					</div>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="thursday-switch" unchecked>
-						<label class="form-check-label" for="flexSwitchCheckChecked">Quinta-feira</label>
-					</div>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="friday-switch" unchecked>
-						<label class="form-check-label" for="flexSwitchCheckChecked">Sexta-feira</label>
-					</div>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="saturday-switch" checked>
-						<label class="form-check-label" for="flexSwitchCheckChecked">Sábado</label>
-					</div>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="sunday-switch" checked>
-						<label class="form-check-label" for="flexSwitchCheckChecked">Domingo</label>
-					</div>
-				</div>
-				<div class="mb-3">
-					<button type="submit" class="btn btn-outline-success" disabled>Criar prato</button>
-				</div>
+			<div>
+
 			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-success">Anterior</button>
+				<button type="button" class="btn btn-outline-success">Próximo</button>
+			</div>            
 		</div>
 	</div>
 </div>
