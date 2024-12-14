@@ -79,6 +79,8 @@ func Upload(c *gin.Context) {
 
 		image_2_be_saved := image
 		image_2_be_saved.Name = filename
+		image_2_be_saved.Path = fmt.Sprintf("static/images/%s", filename)
+		image_2_be_saved.Original = file.Filename
 		if err := initializers.DB.Create(&image_2_be_saved).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

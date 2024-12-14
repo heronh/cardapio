@@ -14,4 +14,5 @@ type Image struct {
 	Company   Company   `gorm:"foreignKey:CompanyID"`
 	Name      string    `gorm:"type:varchar(255)"`
 	Path      string    `gorm:"type:varchar(255)"`
+	Original  string    `gorm:"type:varchar(255)"`
 }

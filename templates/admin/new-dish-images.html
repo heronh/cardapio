@@ -22,17 +22,14 @@
 
 				<div class="mb-3">
 					<h5>2 - Selecione as imagens carregadas</h5>
-					<form action="/dish" method="post">
-						<div class="form-group">
-							<label for="selected-images">Selecione as imagens que deseja adicionar ao prato</label>
-							<select class="form-select" id="selected-images" name="selected-images" multiple>
-								{{ range .Images }}
-								<option value="">{{ .Name }}</option>
-								{{ end }}
-							</select>
-						</div>
-						<button type="submit" class="btn btn-primary mt-2">Adicionar</button>
-					</form>
+					<div class="row ">
+						{{ range .Images }}
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+								<img src="{{ .Path }}" class="img-thumbnail" alt="...">
+							</div>
+						{{ end }}
+					</div>
+					
 				</div>
 			</div>
 			<div class="modal-footer">
