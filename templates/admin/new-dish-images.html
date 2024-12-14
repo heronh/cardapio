@@ -9,9 +9,20 @@
 			</div>
 			<div class="modal-body">
 				<div class="mb-3">
+					
+					{{ if .Images }}
+						<h6>Você tem as seguintes fotos para escolher na próxima página:</h6>
+						<span>{{ .ImageNames }}</span>
+					{{ else }}
+						<h6>Parece que você ainda não carregou nenhuma foto! No formulário abaixo escolha uma ou mais fotos.</h6>
+					{{ end }}
+				</div>
+
+				<br>
+				<div class="mb-3">
+					<h6>Caso a foto desejada não esteja na lista acima, carrege novas fotos e vá para o passo seguinte</h6>
 					<form action="/images/upload" method="post" enctype="multipart/form-data">
 						<div class="form-group">
-							<label for="images">Escolha uma ou mais imagens</label>
 							<input type="file" class="form-control-file" id="images" name="images[]" multiple>
 						</div>
 						<button type="submit" class="btn btn-primary mt-2">Carregar</button>
@@ -20,17 +31,6 @@
 					</form>
 				</div>
 
-				<div class="mb-3">
-					<h5>2 - Selecione as imagens carregadas</h5>
-					<div class="row ">
-						{{ range .Images }}
-							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-								<img src="{{ .Path }}" class="img-thumbnail" alt="...">
-							</div>
-						{{ end }}
-					</div>
-					
-				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>

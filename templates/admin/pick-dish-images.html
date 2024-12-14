@@ -1,0 +1,26 @@
+{{ define "modal-pick-dish-images" }}
+
+<div class="modal fade" id="modal-pick-dish-images" tabindex="-1" aria-labelledby="modal-pick-dish" aria-hidden="true">
+	<div class="modal-dialog modal-fullscreen">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="mb-3">
+					<h5>2 - Escolha uma ou mais fotos para o seu novo prato</h5>
+					<div class="row">
+						{{ range .Images }}
+							<div class="col-4 col-sm-3 col-lg-2 col-xl-1 border border-success p-2 border-opacity-10">
+								<input class="form-check-input" type="checkbox" value="{{ .ID }}">
+								<img src="{{ .Path }}" class="img-thumbnail" alt="...">
+							</div>
+						{{ end }}
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-success">Anterior</button>
+				<button type="button" class="btn btn-outline-success">Próximo</button>
+			</div>
+		</div>
+	</div>
+</div>
+{{ end }}

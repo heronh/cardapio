@@ -3,6 +3,8 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/heronh/cardapio/initializers"
@@ -23,13 +25,25 @@ func NewDish(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("Images: ", images)
+
+	// Copia cada um dos nomes retirando a extensão para uma nova variável
+	var imageNames string
+	for i, image := range images {
+		imageNameWithoutExt := strings.TrimSuffix(image.Original, filepath.Ext(image.Original))
+		images[i].Name = imageNameWithoutExt
+		if imageNames == "" {
+			imageNames = imageNameWithoutExt
+		} else {
+			imageNames = imageNames + ", " + imageNameWithoutExt
+		}
+	}
 
 	c.HTML(http.StatusOK, "dish.html", gin.H{
-		"Title":     "Novo Prato",
-		"CompanyId": CompanyId,
-		"UserId":    UserId,
-		"Images":    images,
+		"Title":      "Novo Prato",
+		"CompanyId":  CompanyId,
+		"UserId":     UserId,
+		"Images":     images,
+		"ImageNames": imageNames,
 	})
 }
 

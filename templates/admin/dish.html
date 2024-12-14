@@ -9,6 +9,7 @@
 
 <div class="container">
 {{ template "modal-new-dish-images" . }}
+{{ template "modal-pick-dish-images" . }}
 </div>
 
 <input type="number" id="current-user-id" value="{{ .UserId }}" hidden />
@@ -18,10 +19,9 @@
 
 <script>
   	$(document).ready(function() {
-		$('#modal-new-dish-images').modal('show');
+		$('#modal-pick-dish-images').modal('show');
   	});
 
-	
 
 	function showAlert(message, duration) {
 		// Create a new div element for the alert
