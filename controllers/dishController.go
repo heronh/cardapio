@@ -17,10 +17,19 @@ func NewDish(c *gin.Context) {
 	UserId := c.MustGet("ID")
 	fmt.Println("UserId: ", UserId)
 
+	// Carrega miniaturas de imagens desta empresa
+	var images []models.Image
+	if err := initializers.DB.Where("company_id = ?", CompanyId).Find(&images).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	fmt.Println("Images: ", images)
+
 	c.HTML(http.StatusOK, "dish.html", gin.H{
 		"Title":     "Novo Prato",
 		"CompanyId": CompanyId,
 		"UserId":    UserId,
+		"Images":    images,
 	})
 }
 
