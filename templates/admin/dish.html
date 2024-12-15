@@ -9,6 +9,18 @@
 
 <div class="container">
 
+	<div class="m-3">
+		<h4>Novos Pratos</h4>
+	</div>
+
+	<hr>
+	<div class="md-3">
+		<p>Você tem <span></span> pratos cadastrados até o momento.</p>
+		<button type="button" class="btn btn-link"  data-bs-toggle="modal" data-bs-target="#modal-new-dish-images">
+			Para incluir um novo, clique aqui e vamos começar!
+		</button>
+	</div>
+
 {{ template "modal-new-dish-images" . }}
 {{ template "modal-pick-dish-images" . }} 
 {{ template "modal-new-category" . }}
@@ -25,7 +37,6 @@
 
 <script>
   	$(document).ready(function() {
-		$('#modal-new-dish-report').modal('show');
 		populateCategories();
   	});
 

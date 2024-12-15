@@ -5,7 +5,7 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="mb-3">
-					<h5>2 - Escolha uma ou mais fotos para o seu novo prato</h5>
+					<h5>2 - Escolha uma foto para o seu novo prato</h5>
 					<div class="row">
 						{{ range .Images }}
 							<div class="col-4 col-sm-3 col-lg-2 col-xl-1 border border-success p-2 border-opacity-10">
@@ -17,8 +17,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-success">Anterior</button>
-				<button type="button" class="btn btn-outline-success">Próximo</button>
+				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-new-dish-images">Anterior</button>
+				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-new-dish-name">Próximo</button>
 			</div>
 		</div>
 	</div>

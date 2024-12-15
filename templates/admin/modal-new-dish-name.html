@@ -8,17 +8,17 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div class="mb-3">
+				<div class="mb-3 form-floating">
+					<input type="text" class="form-control" id="dish-name" placeholder="Nome do prato" required>
 					<label for="dish-name" class="form-label">Nome</label>
-					<input type="text" class="form-control" id="dish-name" name="dish-name" placeholder="Nome do prato" required>
 				</div>
-				<div class="mb-3">
+				<div class="mb-3 form-floating">
+					<textarea class="form-control" id="dish-description" placeholder="Descreva o prato em detalhes" rows="4"></textarea>
 					<label for="dish-description" class="form-label">Descrição</label>
-					<textarea class="form-control" id="dish-description" name="dish-description" placeholder="Descreva o prato em detalhes" rows="4"></textarea>
 				</div>					
-				<div class="mb-3">
-					<label for="dish-price" class="form-label">Preço</label>
+				<div class="mb-3 form-floating">
 					<input type="number" class="form-control" id="dish-price" name="Price" value="25.00" required>
+					<label for="dish-price" class="form-label">Preço</label>
 				</div>
 				<div class="row small m-2">
 					<h6>Dias da Semana</h6>
@@ -51,6 +51,10 @@
 						<label class="form-check-label" for="sunday-switch">Domingo</label>
 					</div>
 				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-pick-dish-images">Anterior</button>
+				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-new-dish-report">Próximo</button>
 			</div>
 		</div>
 	</div>
