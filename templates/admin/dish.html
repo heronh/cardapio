@@ -13,6 +13,7 @@
 {{ template "modal-pick-dish-images" . }} 
 {{ template "modal-new-category" . }}
 {{ template "modal-new-dish-name" . }}
+{{ template "modal-new-dish-report" . }}
 
 </div>
 
@@ -24,7 +25,7 @@
 
 <script>
   	$(document).ready(function() {
-		$('#modal-new-dish-name').modal('show');
+		$('#modal-new-dish-report').modal('show');
 		populateCategories();
   	});
 

@@ -22,11 +22,12 @@
                     <i class="bi bi-plus-lg"></i>
                   </button>
                 </div>
-                <div class="col-11">
+                <div class="col-11 form-floating">
                   <input type="text" class="form-control" id="description" name="description" placeholder="Descrição" required>
-                  <input type="text" class="form-control" value="{{.Id}}" name="Id" hidden>
+                  <label for="description">&nbsp; &nbsp; &nbsp; Descrição</label>
                 </div>
               </div>
+              <input type="text" class="form-control" value="{{.Id}}" name="Id" hidden>
             </div>
           </form>
         </li>

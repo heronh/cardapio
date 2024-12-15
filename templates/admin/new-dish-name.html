@@ -1,0 +1,59 @@
+{{ define "modal-new-dish-name" }}
+
+<div class="modal fade" id="modal-new-dish-name" tabindex="-1" aria-labelledby="modal-new-dish" aria-hidden="true">
+	<div class="modal-dialog modal-fullscreen">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">4 - Nome do novo prato</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="dish-name" class="form-label">Nome</label>
+					<input type="text" class="form-control" id="dish-name" name="dish-name" placeholder="Nome do prato" required>
+				</div>
+				<div class="mb-3">
+					<label for="dish-description" class="form-label">Descrição</label>
+					<textarea class="form-control" id="dish-description" name="dish-description" placeholder="Descreva o prato em detalhes" rows="4"></textarea>
+				</div>					
+				<div class="mb-3">
+					<label for="dish-price" class="form-label">Preço</label>
+					<input type="number" class="form-control" id="dish-price" name="Price" value="25.00" required>
+				</div>
+				<div class="row small m-2">
+					<h6>Dias da Semana</h6>
+					<div class="form-check col">
+						<input class="form-check-input" type="checkbox" id="monday-switch" checked>
+						<label class="form-check-label" for="monday-switch">Segunda</label>
+					</div>
+					<div class="form-check col">
+						<input class="form-check-input" type="checkbox" id="tuesday-switch" checked>
+						<label class="form-check-label" for="tuesday-switch">Terça</label>
+					</div>
+					<div class="form-check col">
+						<input class="form-check-input" type="checkbox" id="wednesday-switch" checked>
+						<label class="form-check-label" for="wednesday-switch">Quarta</label>
+					</div>
+					<div class="form-check col">
+						<input class="form-check-input" type="checkbox" id="thursday-switch" checked>
+						<label class="form-check-label" for="thursday-switch">Quinta</label>
+					</div>
+					<div class="form-check col">
+						<input class="form-check-input" type="checkbox" id="friday-switch" checked>
+						<label class="form-check-label" for="friday-switch">Sexta</label>
+					</div>
+					<div class="form-check col">
+						<input class="form-check-input" type="checkbox" id="saturday-switch" checked>
+						<label class="form-check-label" for="saturday-switch">Sábado</label>
+					</div>
+					<div class="form-check col">
+						<input class="form-check-input" type="checkbox" id="sunday-switch" checked>
+						<label class="form-check-label" for="sunday-switch">Domingo</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ end }}
