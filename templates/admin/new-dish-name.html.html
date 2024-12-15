@@ -1,3 +1,30 @@
 {{ define "modal-new-dish-name" }}
 
+<div class="modal fade" id="modal-new-dish-name" tabindex="-1" aria-labelledby="modal-new-dish" aria-hidden="true">
+	<div class="modal-dialog modal-fullscreen">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">4 - Nome do novo prato</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="dish-name" class="form-label">Nome</label>
+					<input type="text" class="form-control" id="dish-name" name="dish-name" placeholder="Nome do prato" required>
+				</div>
+				<div class="mb-3">
+					<label for="dish-description" class="form-label">Descrição</label>
+					<textarea class="form-control" id="dish-description" name="dish-description" placeholder="Descreva o prato em detalhes" rows="4"></textarea>
+				</div>					
+				<div class="mb-3">
+					<label for="dish-price" class="form-label">Preço</label>
+					<input type="number" class="form-control" id="dish-price" name="Price" value="25.00" required>
+				</div>
+				<div class="mb-3">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 {{ end }}
