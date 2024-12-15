@@ -8,19 +8,47 @@
 {{ template "navbar" . }}
 
 <div class="container">
-{{ template "modal-new-dish-images" . }}
-{{ template "modal-pick-dish-images" . }}
-{{ template "modal-new-category" . }}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+	Launch static backdrop modal
+ </button>
+
+  template "modal-new-dish-images" . 
+  template "modal-pick-dish-images" . 
+ {{ template "modal-new-category" . }}
+  template "modal-new-dish-name" . 
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		 <div class="modal-header">
+			<h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		 </div>
+		 <div class="modal-body">
+			...
+		 </div>
+		 <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Understood</button>
+		 </div>
+	  </div>
+	</div>
+</div>
+
 </div>
 
 <input type="number" id="current-user-id" value="{{ .UserId }}" hidden />
 <input type="number" id="current-company-id" value="{{ .CompanyId }}" hidden />
 
 {{ template "footer" . }}
+</body>
 
 <script>
   	$(document).ready(function() {
-		$('#modal-new-category').modal('show');
+		//$('#staticBackdrop').modal('show');
 		populateCategories();
   	});
 
@@ -46,7 +74,7 @@
 				categoryList.empty();
 				data.categories.forEach(category => {
 					categoryList.append(`<div class="form-check col">
-						<input class="form-check-input" type="radio" name="categoryRadio">
+						<input class="form-check-input" type="radio" name="categoryRadio"/>
 						<label class="form-check">${category.Name}</label>`);
 					categoryList.append(`</div>`);
 				});
@@ -92,7 +120,7 @@
 				console.log('Success:', data);
 				const categoryList = $('#category-list');
 				categoryList.append(`<div class="form-check col">
-					<input class="form-check-input" type="radio" name="categoryRadio">
+					<input class="form-check-input" type="radio" name="categoryRadio"/>
 					<label class="form-check">${data.category}</label></div>`);
 
 				console.log('Success:', data.message);
