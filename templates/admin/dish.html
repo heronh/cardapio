@@ -40,6 +40,30 @@
 		populateCategories();
   	});
 
+	// Event when modal report is shown
+	$('#modal-new-dish-report').on('show.bs.modal', function (event) {
+		console.log('modal-new-dish-report show.bs.modal');
+		const dishName = $('#dish-name').val();
+		const dishDescription = $('#dish-description').val();
+		const dishPrice = $('#dish-price').val();
+		const dishCategory = $('#category-list input:checked').next().text();
+		const weekdays = [];
+		$('#weekdays-list input:checked').each(function() {
+			weekdays.push($(this).next().text());
+		});
+		const images = [];
+		$('#images-list input:checked').each(function() {
+			images.push($(this).next().text());
+		});
+
+		$('#report-dish-name').text(dishName);
+		$('#report-dish-description').text(dishDescription);
+		$('#report-dish-price').text(dishPrice);
+		$('#report-dish-category').text(dishCategory);
+		$('#report-dish-weeekdays').text(weekdays.join(', '));
+		$('#report-dish-images').text(images.join(', '));
+	});
+
 	// Populate categories
 	function populateCategories() {
 

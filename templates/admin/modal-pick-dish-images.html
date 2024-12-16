@@ -9,7 +9,7 @@
 					<div class="row">
 						{{ range .Images }}
 							<div class="col-4 col-sm-3 col-lg-2 col-xl-1 border border-success p-2 border-opacity-10">
-								<input class="form-check-input" type="checkbox" value="{{ .ID }}">
+								<input class="form-check-input" type="checkbox" value="{{ .ID }}" data-original-name="{{ .Original }}">
 								<img src="{{ .Path }}" class="img-thumbnail" alt="...">
 							</div>
 						{{ end }}
@@ -18,7 +18,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-new-dish-images">Anterior</button>
-				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-new-dish-name">Próximo</button>
+				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-new-category">Próximo</button>
 			</div>
 		</div>
 	</div>
