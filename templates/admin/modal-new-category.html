@@ -17,13 +17,12 @@
 				</div>
 
 				<div id="category-list" class="row">
-				</div>
-
-				<div id="div-category-danger" class="alert alert-danger" role="alert" hidden>
-					<span id="span-category-danger"></span>
-				</div>
-				<div id="div-category-success" class="alert alert-success" role="alert" hidden>
-					<span id="span-category-success"></span>
+					{{ range .Categories }}
+					<div class="form-check col">
+						<input class="form-check-input" type="radio" name="categoryRadio" value="{{ .ID }}">
+						<label for="categoryRadio" class="form-check">{{ .Name }}</label>
+					</div>
+					{{ end }}
 				</div>
 			</div>
 

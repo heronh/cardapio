@@ -17,6 +17,8 @@ type Dish struct {
 	Price       float64   `gorm:"type:decimal(10,2)"`
 	CompanyID   uint      `json:"companyid"`
 	Company     Company   `gorm:"foreignKey:CompanyID"`
+	CategoryID  uint      `json:"categoryid"`
+	Category    Category  `gorm:"foreignKey:CategoryID"`
 	UserID      uint      `json:"userid"`
 	User        User      `gorm:"foreignKey:UserID"`
 	Enabled     bool      `gorm:"type:boolean"`

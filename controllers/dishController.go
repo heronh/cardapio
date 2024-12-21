@@ -32,6 +32,10 @@ func NewDish(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	// Print all category names
+	for _, category := range categories {
+		fmt.Println("Category Name: ", category.Name)
+	}
 
 	// Copia cada um dos nomes retirando a extensão para uma nova variável
 	var imageNames string
