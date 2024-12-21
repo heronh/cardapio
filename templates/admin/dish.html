@@ -83,11 +83,10 @@
 			$('#report-dish-name').val(dishName);
 		}
 
-		$('#report-dish-description').text(dishDescription);
-		$('#report-dish-price').text(dishPrice);
-		$('#report-dish-category').text(dishCategory);
-		$('#report-dish-weeekdays').text(weekdays.join(', '));
-		$('#report-dish-images').text(images.join(', '));
+		$('#report-dish-description').val(dishDescription);
+		$('#report-dish-price').val(dishPrice);
+		$('#report-dish-category').val(dishCategory);
+		$('#report-dish-weekdays').val(weekdays.join(', '));
 
 		$('#picked-images').empty();
 		paths.forEach((path, index) => {
