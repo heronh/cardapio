@@ -38,7 +38,11 @@
 <script>
   	$(document).ready(function() {
 
-		$('#modal-new-category').modal('show');
+		// Set the first category as selected
+		$('#category-list input[type="radio"]').first().prop('checked', true);
+		// Set the first two images as selected
+		$('.image-group').slice(0, 2).prop('checked', true);
+		$('#modal-new-dish-report').modal('show');
   	});
 
 	// Event when btn-save-dish is clicked
