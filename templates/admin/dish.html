@@ -38,6 +38,7 @@
 <script>
   	$(document).ready(function() {
 		populateCategories();
+		$('#modal-pick-dish-images').modal('show');
   	});
 
 	// Event when modal report is shown
@@ -47,21 +48,52 @@
 		const dishDescription = $('#dish-description').val();
 		const dishPrice = $('#dish-price').val();
 		const dishCategory = $('#category-list input:checked').next().text();
-		const weekdays = [];
-		$('#weekdays-list input:checked').each(function() {
-			weekdays.push($(this).next().text());
-		});
-		const images = [];
-		$('#images-list input:checked').each(function() {
-			images.push($(this).next().text());
-		});
 
-		$('#report-dish-name').text(dishName);
+		const weekdays = [];
+		$('.weekday-group').each(function() {
+			if ($(this).is(':checked')) {
+				weekdays.push($(this).next().text());
+			}
+		});
+		console.log('Weekdays:', weekdays);
+
+		const paths = [];
+		const images = [];
+		const image_ids = [];
+		$('.image-group').each(function() {
+			if ($(this).is(':checked')) {
+				images.push($(this).data('original-name'));
+				paths.push($(this).data('path'));
+				image_ids.push($(this).data('image-id'));
+			}
+		});
+		console.log('Images:', images);
+		console.log('Paths:', paths);
+		console.log('Image IDs:', image_ids);
+		
+		if (!dishName) {
+			console.log('Dish name is empty!');
+			$('#report-dish-name').addClass('text-danger');
+			$('#report-dish-name').val('Nome do prato não informado!');
+			$('#btn-save-dish').attr('disabled', true);
+		}
+		else {
+			$('#report-dish-name').removeClass('text-danger');
+			$('#btn-save-dish').removeAttr('disabled');
+			$('#report-dish-name').val(dishName);
+		}
+
 		$('#report-dish-description').text(dishDescription);
 		$('#report-dish-price').text(dishPrice);
 		$('#report-dish-category').text(dishCategory);
 		$('#report-dish-weeekdays').text(weekdays.join(', '));
 		$('#report-dish-images').text(images.join(', '));
+
+		$('#picked-images').empty();
+		paths.forEach((path, index) => {
+			$('#picked-images').append(`<div class="col-4 col-sm-3 col-lg-2 col-xl-1 border border-success p-2 border-opacity-10">
+				<img src="${path}" class="img-thumbnail" alt="..."></div>`);
+		});
 	});
 
 	// Populate categories

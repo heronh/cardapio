@@ -8,19 +8,43 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
+		
 			<div class="modal-body">
-				<ul class="list-group list-group-flush">
-					<li id="report-dish-name" class="list-group-item"></li>
-					<li id="report-dish-description" class="list-group-item"></li>
-					<li id="report-dish-price" class="list-group-item"></li>
-					<li id="report-dish-category" class="list-group-item"></li>
-					<li id="report-dish-weeekdays" class="list-group-item"></li>
-					<li id="report-dish-images" class="list-group-item"></li>
-				</ul>
+
+				<div class="mb-3 form-floating">
+					<input type="text" class="form-control" id="report-dish-name">
+					<label for="report-dish-name" class="form-label">Nome do prato</label>
+				</div>
+
+				<div class="mb-3 form-floating">
+					<textarea class="form-control" id="report-dish-description" rows="4"></textarea>
+					<label for="report-dish-description" class="form-label">Descrição</label>
+				</div>
+
+				<div class="mb-3 form-floating">
+					<input type="number" class="form-control" id="report-dish-price">
+					<label for="report-dish-price" class="form-label">Preço</label>
+				</div>
+
+				<div class="mb-3 form-floating">
+					<input type="text" class="form-control" id="report-dish-category">
+					<label for="report-dish-category" class="form-label">Categoria</label>
+				</div>
+
+				<div class="mb-3 form-floating">
+					<input type="text" class="form-control" id="report-dish-weekdays">
+					<label for="report-dish-weekdays" class="form-label">Dias da semana</label>
+				</div>
+
+				<div class="mb-3">
+					<div id="picked-images" class="row">
+					</div>
+				</div>
 			</div>
+
 			<div class="modal-footer">
 				<button type="button" class="btn btn-outline-success" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-new-dish-name">Anterior</button>
-				<button type="button" class="btn btn-outline-success" data-dismiss="modal" disabled>Salvar</button>
+				<button id="btn-save-dish" type="button" class="btn btn-outline-success" data-dismiss="modal" disabled>Salvar</button>
 			</div>
 		</div>
 	</div>
