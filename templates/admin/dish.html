@@ -51,16 +51,17 @@
 		const dishName = $('#dish-name').val();
 		const dishDescription = $('#dish-description').val();
 		const dishPrice = $('#dish-price').val();
-		const dishCategory = $('#category-list input:checked').val();
+		const categoryID = $('#category-list input:checked').val();
+		const dishCategory = $('#category-list input:checked').next().text();
 		console.log('Dish Name:', dishName);
 		console.log('Dish Description:', dishDescription);
 		console.log('Dish Price:', dishPrice);
-		console.log('Dish Category:', dishCategory);
+		console.log('Dish Category:', categoryID, ' - ', dishCategory);
 
 		const weekdays = [];
 		$('.weekday-group').each(function() {
 			if ($(this).is(':checked')) {
-				weekdays.push($(this).val());
+				weekdays.push(parseInt($(this).val()));
 			}
 		});
 		console.log('Weekdays:', weekdays);
@@ -72,7 +73,7 @@
 			if ($(this).is(':checked')) {
 				images.push($(this).data('original-name'));
 				paths.push($(this).data('path'));
-				image_ids.push($(this).data('image-id'));
+				image_ids.push(parseInt($(this).data('image-id')));
 			}
 		});
 		console.log('Images:', images);
@@ -82,14 +83,12 @@
 		const CompanyId = $('#current-company-id').val();
 		const UserId = $('#current-user-id').val();
 
-		return;
-
-		fetch('/api/create/dish', {
+		fetch('/api/save/dish', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ Name:dishName, Description:dishDescription, Price:dishPrice, Category:dishCategory, Weekdays:weekdays, ImageIds:image_ids, CompanyId:parseInt(CompanyId), UserId:parseInt(UserId) })
+			body: JSON.stringify({ Name:dishName, Description:dishDescription, Price:dishPrice, categoryID:parseInt(categoryID), Weekdays:weekdays, ImageIds:image_ids, CompanyId:parseInt(CompanyId), UserId:parseInt(UserId) })
 		})
 		.then(response => response.json())
 		.then(data => {
@@ -162,42 +161,6 @@
 		});
 	});
 
-	// Populate categories
-	/*
-	function populateCategories() {
-
-		const CompanyId = $('#current-company-id').val();
-		fetch('/api/get/categories', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ CompanyId:parseInt(CompanyId)})
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.error) {
-				console.log('Error:', data);
-				showAlert(data.error, 3000);
-			} 
-			else {
-				const categoryList = $('#category-list');
-				categoryList.empty();
-				data.categories.forEach(category => {
-					categoryList.append(`<div class="form-check col">
-						<input class="form-check-input" type="radio" name="categoryRadio" val="category.Id"/>
-						<label class="form-check">${category.Name}</label>`);
-					categoryList.append(`</div>`);
-				});
-
-				if (data.categories.length > 0) {
-					categoryList.find('input[type="radio"]').first().prop('checked', true);
-				}
-			}
-		})
-	}
-	*/
-	
 	// Evento quando pressionado ENTER em category name
 	$('#category-name').keydown(function(e) {
 		console.log('category-name keypress');

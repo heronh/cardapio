@@ -22,6 +22,6 @@ type Dish struct {
 	UserID      uint      `json:"userid"`
 	User        User      `gorm:"foreignKey:UserID"`
 	Enabled     bool      `gorm:"type:boolean"`
-	DaysOfWeek  []int     `gorm:"type:int[]"`             // 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
-	Images      []Image   `gorm:"many2many:dish_images;"` // many to many relationship
+	DaysOfWeek  []int     `gorm:"type:integer[]"` // 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
+	Images      []*Image  `gorm:"many2many:dish_images;"`
 }

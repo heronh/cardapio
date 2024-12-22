@@ -61,6 +61,7 @@ func main() {
 	r.GET("/dish", controllers.AuthMiddleware(), controllers.NewDish)
 	r.POST("/api/create/category", controllers.CreateCategory)
 	r.POST("/api/get/categories", controllers.GetCategories)
+	r.POST("/api/save/dish", controllers.SaveDish)
 
 	r.POST("/login", controllers.Login)
 	r.GET("/logout", controllers.Logout)

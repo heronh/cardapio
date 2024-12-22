@@ -15,4 +15,5 @@ type Image struct {
 	Name      string    `gorm:"type:varchar(255)"`
 	Path      string    `gorm:"type:varchar(255)"`
 	Original  string    `gorm:"type:varchar(255)"`
+	Dishes    []*Dish   `gorm:"many2many:dish_images;"`
 }
