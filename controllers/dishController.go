@@ -52,6 +52,13 @@ func NewDish(c *gin.Context) {
 		}
 	}
 
+	var weekDays []models.WeekDay
+	if err := initializers.DB.Find(&weekDays).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	fmt.Println("weekDays: ", weekDays)
+
 	c.HTML(http.StatusOK, "dish.html", gin.H{
 		"Title":      "Novo Prato",
 		"CompanyId":  CompanyId,
@@ -59,6 +66,7 @@ func NewDish(c *gin.Context) {
 		"Images":     images,
 		"ImageNames": imageNames,
 		"Categories": categories,
+		"WeekDays":   weekDays,
 	})
 }
 
@@ -91,11 +99,6 @@ func SaveDish(c *gin.Context) {
 	fmt.Println("WeekDays: ", requestData.WeekDays)
 	fmt.Println("Images: ", requestData.ImageIds)
 
-	daysOfWeek := make([]models.DayOfWeek, len(requestData.WeekDays))
-	for i, day := range requestData.WeekDays {
-		daysOfWeek[i] = models.DayOfWeek(day)
-	}
-
 	dish := models.Dish{
 		Name:        requestData.Name,
 		Description: requestData.Description,
@@ -103,7 +106,6 @@ func SaveDish(c *gin.Context) {
 		CategoryID:  requestData.CategoryID,
 		CompanyID:   requestData.CompanyId,
 		UserID:      requestData.UserID,
-		DaysOfWeek:  daysOfWeek,
 		Enabled:     true,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),

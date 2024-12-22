@@ -11,4 +11,5 @@ func SyncDatabase() {
 	DB.AutoMigrate(&models.Image{})
 	DB.AutoMigrate(&models.Category{})
 	DB.AutoMigrate(&models.Dish{}, &models.Image{})
+	DB.AutoMigrate(&models.WeekDay{})
 }

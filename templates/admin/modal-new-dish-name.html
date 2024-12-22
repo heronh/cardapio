@@ -22,34 +22,12 @@
 				</div>
 				<div class="row small m-2">
 					<h6>Dias da Semana</h6>
-					<div class="form-check col">
-						<input class="form-check-input weekday-group" type="checkbox" value="1" checked>
-						<label class="form-check-label" for="monday-switch">Segunda</label>
-					</div>
-					<div class="form-check col">
-						<input class="form-check-input weekday-group" type="checkbox" value="2">
-						<label class="form-check-label" for="tuesday-switch">Terça</label>
-					</div>
-					<div class="form-check col">
-						<input class="form-check-input weekday-group" type="checkbox" value="3" checked>
-						<label class="form-check-label" for="wednesday-switch">Quarta</label>
-					</div>
-					<div class="form-check col">
-						<input class="form-check-input weekday-group" type="checkbox" value="4" checked>
-						<label class="form-check-label" for="thursday-switch">Quinta</label>
-					</div>
-					<div class="form-check col">
-						<input class="form-check-input weekday-group" type="checkbox" value="5">
-						<label class="form-check-label" for="friday-switch">Sexta</label>
-					</div>
-					<div class="form-check col">
-						<input class="form-check-input weekday-group" type="checkbox" value="6" checked>
-						<label class="form-check-label" for="saturday-switch">Sábado</label>
-					</div>
-					<div class="form-check col">
-						<input class="form-check-input weekday-group" type="checkbox" value="0" checked>
-						<label class="form-check-label" for="sunday-switch">Domingo</label>
-					</div>
+					{{ range .WeekDays }}
+						<div class="form-check col">
+							<input class="form-check-input weekday-group" type="checkbox" value="{{ .ID }}" checked>
+							<label class="form-check-label" for="monday-switch">{{ .Description }}</label>
+						</div>
+					{{ end }}
 				</div>
 			</div>
 			<div class="modal-footer">

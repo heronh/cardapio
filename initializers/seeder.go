@@ -45,11 +45,27 @@ func Seeder() {
 	user.Email = "heron@gmail.com"
 	user.UpdatedAt = time.Now()
 	user.CreatedAt = time.Now()
-	user.Password = "123456"
+	user.Password = "Dffr#4dff"
 	user.Company = company
 	hash, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	user.Password = string(hash)
 
 	// save the user to the database
 	DB.Create(&user)
+
+	// Populate days of week
+	weekDays := []models.WeekDay{
+		{Description: "Domingo"},
+		{Description: "Segunda"},
+		{Description: "Terça"},
+		{Description: "Quarta"},
+		{Description: "Quinta"},
+		{Description: "Sexta"},
+		{Description: "Sábado"},
+	}
+
+	for _, day := range weekDays {
+		DB.Create(&day)
+	}
+
 }
