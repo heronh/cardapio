@@ -59,6 +59,10 @@ func NewDish(c *gin.Context) {
 	}
 	fmt.Println("weekDays: ", weekDays)
 
+	// Count dish available in DB
+	var count int64
+	initializers.DB.Model(&models.Dish{}).Where("company_id = ?", CompanyId).Count(&count)
+
 	c.HTML(http.StatusOK, "dish.html", gin.H{
 		"Title":      "Novo Prato",
 		"CompanyId":  CompanyId,
@@ -67,6 +71,7 @@ func NewDish(c *gin.Context) {
 		"ImageNames": imageNames,
 		"Categories": categories,
 		"WeekDays":   weekDays,
+		"Count":      count,
 	})
 }
 
