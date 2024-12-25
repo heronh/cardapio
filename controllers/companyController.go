@@ -25,6 +25,7 @@ func CompanySave(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	company.Stamp = fmt.Sprintf("%d", company.CreatedAt.Unix())
 
 	// save the company to the database
 	fmt.Println(company)

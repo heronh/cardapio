@@ -27,7 +27,7 @@
 				{{ template "admin-list-dish" . }}
 			{{ end }}
 			<li class="list-group-item">
-				<button class="btn btn-primary btn-add-dish">Criar pratos</button>
+				<a class="btn btn-outline-success" href="dish">Adicionar novos pratos</a>
 			</li>
 		</ul>
 		{{ end }}
@@ -111,8 +111,11 @@
 	}
 
 	$('#btn-create-dishes').click(function() {
+		console.log('btn-create-dishes clicked');
 		const CompanyId = $('#current-company-id').val();
 		const UserId = $('#current-user-id').val();
+		console.log('CompanyId:', CompanyId);
+		console.log('UserId:', UserId);
 		fetch('/create-dishes', {
 			method: 'POST',
 			headers: {

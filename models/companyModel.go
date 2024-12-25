@@ -25,4 +25,5 @@ type Company struct {
 	Phone       string    `gorm:"type:varchar(20)"`
 	Website     string    `gorm:"type:varchar(100)"`
 	Users       []User    `gorm:"foreignKey:CompanyId"`
+	Stamp       string    `gorm:"type:varchar(20)"`
 }

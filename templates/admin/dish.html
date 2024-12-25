@@ -17,10 +17,11 @@
 	<div class="md-3">
 		<p>Você tem <span>{{ .Count }}</span> pratos cadastrados até o momento.</p>
 		{{ if .Count }}
-		<a>Para ver uma amostra do seu Menu, clique aqui</a>
+		<a href="{{ .MenuLink }}">Para ver uma amostra do seu Menu, clique aqui</a>
 		{{ end }}
 	</div>
 
+	<hr>
 	<div class="md-3">
 		<button type="button" class="btn btn-link"  data-bs-toggle="modal" data-bs-target="#modal-new-dish-images">
 			Para incluir um novo, clique aqui e vamos começar!
@@ -106,6 +107,7 @@
 			else {
 				console.log('Success:', data);
 				showAlert(data.message, 3000);
+				location.reload();
 			}
 		})
 	});

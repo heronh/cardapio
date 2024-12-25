@@ -63,6 +63,8 @@ func main() {
 	r.POST("/api/get/categories", controllers.GetCategories)
 	r.POST("/api/save/dish", controllers.SaveDish)
 
+	r.GET("/menu", controllers.Menu)
+
 	r.POST("/login", controllers.Login)
 	r.GET("/logout", controllers.Logout)
 	r.GET("register", controllers.Register)

@@ -22,6 +22,17 @@ func NewDish(c *gin.Context) {
 	UserId := c.MustGet("ID")
 	fmt.Println("UserId: ", UserId)
 
+	// Find createdat from company
+	var company models.Company
+	if err := initializers.DB.First(&company, CompanyId).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	// Convert CreatedAt to timestamp and extract timezone
+	timestamp := company.Stamp
+	fmt.Println("Company CreatedAt timestamp: ", timestamp)
+	menu_link := "/menu?timestamp=" + timestamp
+
 	// Carrega miniaturas de imagens desta empresa
 	var images []models.Image
 	if err := initializers.DB.Where("company_id = ?", CompanyId).Find(&images).Error; err != nil {
@@ -62,6 +73,7 @@ func NewDish(c *gin.Context) {
 	// Count dish available in DB
 	var count int64
 	initializers.DB.Model(&models.Dish{}).Where("company_id = ?", CompanyId).Count(&count)
+	fmt.Println("Total de pratos: ", count)
 
 	c.HTML(http.StatusOK, "dish.html", gin.H{
 		"Title":      "Novo Prato",
@@ -72,6 +84,7 @@ func NewDish(c *gin.Context) {
 		"Categories": categories,
 		"WeekDays":   weekDays,
 		"Count":      count,
+		"MenuLink":   menu_link,
 	})
 }
 
